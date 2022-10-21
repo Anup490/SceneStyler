@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class GameBehaviour : MonoBehaviour
 {
-    const float dragSpeed = 0.005f;
-
     Camera cam;
     GameObject selectedObject;
     GameObject canvas;
@@ -78,23 +76,22 @@ public class GameBehaviour : MonoBehaviour
         if (selectedObject != null)
         {
             if (IsZero(lastMousePos)) lastMousePos = Input.mousePosition;
-            ShowUIAt(Input.mousePosition, selectedObject.name);
-            Transform transform = selectedObject.transform;
-            float zoffset = cam.transform.position.z - transform.position.z;
-            float multiplier = dragSpeed - (zoffset * 0.001f);
-            Vector3 diff = (Input.mousePosition - lastMousePos) * multiplier;
-            transform.position += diff;
+            ShowUIAt(selectedObject.name);
+            float zoffset = (cam.transform.position.z - selectedObject.transform.position.z) * -1.0f;
+            float dragSpeed = zoffset * 0.001875f;
+            Vector3 diff = (Input.mousePosition - lastMousePos) * dragSpeed;
+            selectedObject.transform.position += diff;
             lastMousePos = Input.mousePosition;
         }
     }
 
-    void ShowUIAt(Vector3 mousePosition, string text)
+    void ShowUIAt(string text)
     {
         int width = 50 + text.Length * 5;
         canvas.SetActive(true);
         textMesh.text = text;
         RectTransform rectTransformImage = image.rectTransform;
-        rectTransformImage.position = mousePosition;
+        rectTransformImage.position = Input.mousePosition;
         rectTransformImage.sizeDelta = new Vector2(width, 20);
         RectTransform rectTransformText = textMesh.rectTransform;
         rectTransformText.sizeDelta = new Vector2(width, 20);
