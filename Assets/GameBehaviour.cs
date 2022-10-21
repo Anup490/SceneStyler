@@ -91,7 +91,6 @@ public class GameBehaviour : MonoBehaviour
         canvas.SetActive(true);
         textMesh.text = text;
         RectTransform rectTransformImage = image.rectTransform;
-        rectTransformImage.position = Input.mousePosition;
         rectTransformImage.sizeDelta = new Vector2(width, 20);
         RectTransform rectTransformText = textMesh.rectTransform;
         rectTransformText.sizeDelta = new Vector2(width, 20);
