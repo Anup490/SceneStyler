@@ -39,15 +39,6 @@ public class Android : Device
         }
     }
 
-    /*void RayCast(Touch touch)
-    {
-        Ray ray = camera.ScreenPointToRay(touch.position);
-        RaycastHit hit;
-        Physics.Raycast(ray, out hit);
-        if (hit.collider != null)
-            selectedObject = hit.collider.gameObject;
-    }*/
-
     void MoveObject(Touch touch)
     {
         if (selectedObject != null)

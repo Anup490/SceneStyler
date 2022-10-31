@@ -22,16 +22,6 @@ public class Windows : Device
         }
     }
 
-    /*void RayCast()
-    {
-        //Vector3 mousePosition = Input.mousePosition;
-        Ray ray = camera.ScreenPointToRay(mousePosition);
-        RaycastHit hit;
-        Physics.Raycast(ray, out hit);
-        if (hit.collider != null)
-            selectedObject = hit.collider.gameObject;
-    }*/
-
     void MoveObject()
     {
         if (selectedObject != null)
