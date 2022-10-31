@@ -8,18 +8,27 @@ public class Windows : Device
 
     public override void OnUpdate()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(1) && selectedObject != null)
+            HandleRotation();
+        else if (Input.GetMouseButton(0))
         {
             if (selectedObject == null)
                 RayCast(Input.mousePosition);
             else
-                MoveObject();
+                MoveObject();                
         }
         else
         {
             lastMousePos = Vector3.zero;
             Reset();
         }
+    }
+
+    void HandleRotation()
+    {
+        Vector3 diff = Input.mousePosition - lastMousePos;
+        selectedObject.transform.Rotate(0, -diff.x, 0);
+        lastMousePos = Input.mousePosition;
     }
 
     void MoveObject()

@@ -35,7 +35,7 @@ public class Android : Device
         if (touch.phase == TouchPhase.Moved)
         {
             Transform transform = selectedObject.transform;
-            transform.Rotate(-touch.deltaPosition.y, -touch.deltaPosition.x, 0);
+            transform.Rotate(0, -touch.deltaPosition.x, 0);
         }
     }
 
