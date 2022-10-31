@@ -11,11 +11,13 @@ public class GameBehaviour : MonoBehaviour
     TextMeshProUGUI textMesh;
     Device device;
 
-    protected const float miny = -0.09f;
-
     public void OnDragStart(Vector3 position)
     {
-        RayCast(position);
+        Ray ray = cam.ScreenPointToRay(position);
+        RaycastHit hit;
+        Physics.Raycast(ray, out hit);
+        if (hit.collider != null)
+            selectedObject = hit.collider.gameObject;
     }
 
     public void OnDrag(Vector3 positionDiff)
@@ -26,9 +28,9 @@ public class GameBehaviour : MonoBehaviour
             float zoffset = (cam.transform.position.z - selectedObject.transform.position.z) * -1.0f;
             float dragSpeed = zoffset * 0.001875f;
             Vector3 diff = positionDiff * dragSpeed;
-            Vector3 newPosition = selectedObject.transform.position + diff;
-            if (newPosition.y >= miny)
-                selectedObject.transform.position = newPosition;
+            AssetBehaviour assetBehaviour = selectedObject.GetComponent<AssetBehaviour>();
+            if (assetBehaviour != null)
+                assetBehaviour.Displace(diff);
         }
     }
 
@@ -48,8 +50,7 @@ public class GameBehaviour : MonoBehaviour
     void Start()
     {
         cam = GetComponent<Camera>();
-        InitUI();
-        InitDevice();
+        Init();
     }
 
     void Update()
@@ -57,7 +58,7 @@ public class GameBehaviour : MonoBehaviour
         device.OnUpdate();
     }
 
-    void InitUI()
+    void Init()
     {
         Object[] objects = FindObjectsOfType(typeof(GameObject));
         foreach (Object o in objects)
@@ -71,22 +72,8 @@ public class GameBehaviour : MonoBehaviour
         }
         image = GetComponentInChildren<Image>();
         textMesh = GetComponentInChildren<TextMeshProUGUI>();
-        if (canvas != null)
-            canvas.SetActive(false);
-    }
-
-    void InitDevice()
-    {
+        ShowHideUI(false);
         device = (SystemInfo.deviceType == DeviceType.Handheld) ? new Android(this) : new Windows(this);
-    }
-
-    void RayCast(Vector3 position)
-    {
-        Ray ray = cam.ScreenPointToRay(position);
-        RaycastHit hit;
-        Physics.Raycast(ray, out hit);
-        if (hit.collider != null)
-            selectedObject = hit.collider.gameObject;
     }
 
     void ShowUIAt(string text)
