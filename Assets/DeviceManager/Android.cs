@@ -9,47 +9,30 @@ public class Android : Device
     public override void OnUpdate()
     {
         if (Input.touchCount > 0)
-            HandleDrag(Input.GetTouch(0));
-        if ((Input.touchCount > 1) && (selectedObject != null))
-            HandleRotation(Input.GetTouch(1));
+            OnFirstTouch(Input.GetTouch(0));
+        if (Input.touchCount > 1)
+            OnSecondTouch(Input.GetTouch(1));
     }
 
-    void HandleDrag(Touch touch)
+    void OnFirstTouch(Touch touch)
     {
         if ((touch.phase == TouchPhase.Began) && (prevDragFingerId == -1))
         {
             prevDragFingerId = touch.fingerId;
-            RayCast(touch.position);
+            gameBehaviour.OnDragStart(touch.position);
         }
         else if ((touch.phase == TouchPhase.Moved) && (prevDragFingerId == touch.fingerId))
-            MoveObject(touch);
+            gameBehaviour.OnDrag(new Vector3(touch.deltaPosition.x, touch.deltaPosition.y));
         else if (touch.phase == TouchPhase.Ended)
         {
             prevDragFingerId = -1;
-            Reset();
+            gameBehaviour.OnDragEnd();
         }
     }
 
-    void HandleRotation(Touch touch)
+    void OnSecondTouch(Touch touch)
     {
         if (touch.phase == TouchPhase.Moved)
-        {
-            Transform transform = selectedObject.transform;
-            transform.Rotate(0, -touch.deltaPosition.x, 0);
-        }
-    }
-
-    void MoveObject(Touch touch)
-    {
-        if (selectedObject != null)
-        {
-            gameBehaviour.ShowUIAt(selectedObject.name);
-            float zoffset = (camera.transform.position.z - selectedObject.transform.position.z) * -1.0f;
-            float dragSpeed = zoffset * 0.001875f;
-            Vector3 diff = new Vector3(touch.deltaPosition.x, touch.deltaPosition.y) * dragSpeed;
-            Vector3 newPosition = selectedObject.transform.position + diff;
-            if (newPosition.y >= miny)
-                selectedObject.transform.position = newPosition;
-        }
+            gameBehaviour.OnRotate(touch.deltaPosition);   
     }
 }

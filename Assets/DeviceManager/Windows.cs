@@ -3,47 +3,37 @@
 public class Windows : Device
 {
     Vector3 lastMousePos;
+    bool hasPressedLMB = false;
 
     public Windows(GameBehaviour gameBehaviour) : base(gameBehaviour) {}
 
     public override void OnUpdate()
     {
-        if (Input.GetMouseButton(1) && selectedObject != null)
-            HandleRotation();
+        if (Input.GetMouseButton(1))
+        {
+            Vector3 diff = Input.mousePosition - lastMousePos;
+            gameBehaviour.OnRotate(diff);
+            lastMousePos = Input.mousePosition;
+        }
         else if (Input.GetMouseButton(0))
         {
-            if (selectedObject == null)
-                RayCast(Input.mousePosition);
+            if (hasPressedLMB)
+            {
+                if (IsZero(lastMousePos)) lastMousePos = Input.mousePosition;
+                gameBehaviour.OnDrag(Input.mousePosition - lastMousePos);
+                lastMousePos = Input.mousePosition;
+            }
             else
-                MoveObject();                
+            {
+                gameBehaviour.OnDragStart(Input.mousePosition);
+                hasPressedLMB = true;
+            }              
         }
         else
         {
             lastMousePos = Vector3.zero;
-            Reset();
-        }
-    }
-
-    void HandleRotation()
-    {
-        Vector3 diff = Input.mousePosition - lastMousePos;
-        selectedObject.transform.Rotate(0, -diff.x, 0);
-        lastMousePos = Input.mousePosition;
-    }
-
-    void MoveObject()
-    {
-        if (selectedObject != null)
-        {
-            if (IsZero(lastMousePos)) lastMousePos = Input.mousePosition;
-            gameBehaviour.ShowUIAt(selectedObject.name);
-            float zoffset = (camera.transform.position.z - selectedObject.transform.position.z) * -1.0f;
-            float dragSpeed = zoffset * 0.001875f;
-            Vector3 diff = (Input.mousePosition - lastMousePos) * dragSpeed;
-            Vector3 newPosition = selectedObject.transform.position + diff;
-            if (newPosition.y >= miny)
-                selectedObject.transform.position = newPosition;
-            lastMousePos = Input.mousePosition;
+            hasPressedLMB = false;
+            gameBehaviour.OnDragEnd();
         }
     }
 

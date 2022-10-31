@@ -6,30 +6,43 @@ public class GameBehaviour : MonoBehaviour
 {
     Camera cam;
     GameObject canvas;
+    GameObject selectedObject;
     Image image;
     TextMeshProUGUI textMesh;
     Device device;
 
-    public void ShowUIAt(string text)
+    protected const float miny = -0.09f;
+
+    public void OnDragStart(Vector3 position)
     {
-        int width = 50 + text.Length * 5;
-        ShowHideUI(true);
-        textMesh.text = text;
-        RectTransform rectTransformImage = image.rectTransform;
-        rectTransformImage.sizeDelta = new Vector2(width, 20);
-        RectTransform rectTransformText = textMesh.rectTransform;
-        rectTransformText.sizeDelta = new Vector2(width, 20);
+        RayCast(position);
     }
 
-    public void ShowHideUI(bool show)
+    public void OnDrag(Vector3 positionDiff)
     {
-        if (canvas != null)
-            canvas.SetActive(show);
+        if (selectedObject != null)
+        {
+            ShowUIAt(selectedObject.name);
+            float zoffset = (cam.transform.position.z - selectedObject.transform.position.z) * -1.0f;
+            float dragSpeed = zoffset * 0.001875f;
+            Vector3 diff = positionDiff * dragSpeed;
+            Vector3 newPosition = selectedObject.transform.position + diff;
+            if (newPosition.y >= miny)
+                selectedObject.transform.position = newPosition;
+        }
     }
 
-    public Camera GetCamera()
+    public void OnDragEnd()
     {
-        return cam;
+        ShowHideUI(false);
+        if (selectedObject != null)
+            selectedObject = null;
+    }
+
+    public void OnRotate(Vector3 diff)
+    {
+        if (selectedObject != null)
+            selectedObject.transform.Rotate(0, -diff.x, 0);
     }
 
     void Start()
@@ -65,5 +78,31 @@ public class GameBehaviour : MonoBehaviour
     void InitDevice()
     {
         device = (SystemInfo.deviceType == DeviceType.Handheld) ? new Android(this) : new Windows(this);
+    }
+
+    void RayCast(Vector3 position)
+    {
+        Ray ray = cam.ScreenPointToRay(position);
+        RaycastHit hit;
+        Physics.Raycast(ray, out hit);
+        if (hit.collider != null)
+            selectedObject = hit.collider.gameObject;
+    }
+
+    void ShowUIAt(string text)
+    {
+        int width = 50 + text.Length * 5;
+        ShowHideUI(true);
+        textMesh.text = text;
+        RectTransform rectTransformImage = image.rectTransform;
+        rectTransformImage.sizeDelta = new Vector2(width, 20);
+        RectTransform rectTransformText = textMesh.rectTransform;
+        rectTransformText.sizeDelta = new Vector2(width, 20);
+    }
+
+    void ShowHideUI(bool show)
+    {
+        if (canvas != null)
+            canvas.SetActive(show);
     }
 }
