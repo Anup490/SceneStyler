@@ -1,15 +1,26 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class GameBehaviour : MonoBehaviour
 {
     Camera cam;
-    GameObject canvas;
     GameObject selectedObject;
     Image image;
     TextMeshProUGUI textMesh;
     Device device;
+    GameMode mode = GameMode.DRAG;
+
+    public enum GameMode
+    {
+        DRAG, ROTATE
+    }
+
+    public void SetGameMode(GameMode gameMode)
+    {
+        mode = gameMode;
+    }
 
     public void OnDragStart(Vector3 position)
     {
@@ -17,34 +28,67 @@ public class GameBehaviour : MonoBehaviour
         RaycastHit hit;
         Physics.Raycast(ray, out hit);
         if (hit.collider != null)
+        {
             selectedObject = hit.collider.gameObject;
+            cursosPrevWorldPos = ray.origin;
+        }
+        else
+        {
+            selectedObject = null;
+            cursosPrevWorldPos = new Vector3();
+        }  
     }
 
-    public void OnDrag(Vector3 positionDiff)
+    Vector3 cursosPrevWorldPos;
+
+    public void OnDrag(Vector3 position)
     {
-        if (selectedObject != null)
+        if (mode == GameMode.DRAG && selectedObject != null)
         {
-            ShowUIAt(selectedObject.name);
-            float zoffset = (cam.transform.position.z - selectedObject.transform.position.z) * -1.0f;
-            float dragSpeed = zoffset * 0.001875f;
-            Vector3 diff = positionDiff * dragSpeed;
-            AssetBehaviour assetBehaviour = selectedObject.GetComponent<AssetBehaviour>();
-            if (assetBehaviour != null)
-                assetBehaviour.Displace(diff);
+            Ray ray = cam.ScreenPointToRay(position);
+            RaycastHit hit;
+            Physics.Raycast(ray, out hit);
+            Vector3 cursorDiff = ray.origin - cursosPrevWorldPos;
+            cursosPrevWorldPos = ray.origin;
+            if (hit.collider != null)
+            {
+                float fDistFromCam = selectedObject.transform.position.z - cam.transform.position.z;
+                Vector3 vDistFromCam = new Vector3(0.0f, 0.0f, fDistFromCam);
+                float cosine = GetCosine(ray.direction, vDistFromCam);
+                float rayLength = fDistFromCam / cosine;
+                Vector3 targetPosition = ray.direction * rayLength;
+                targetPosition.y++;
+                targetPosition.z = selectedObject.transform.position.z + (cursorDiff.y * 50.0f);               
+                AssetBehaviour assetBehaviour = selectedObject.GetComponent<AssetBehaviour>();
+                if (assetBehaviour != null)
+                {
+                    ShowUIAt(selectedObject.name);
+                    assetBehaviour.Displace(targetPosition);
+                }
+            }
         }
+    }
+
+    float GetCosine(Vector3 v1, Vector3 v2)
+    {
+        float dot = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+        float v1Len = (float)Math.Sqrt(v1.x * v1.x + v1.y * v1.y + v1.z * v1.z);
+        float v2Len = (float)Math.Sqrt(v2.x * v2.x + v2.y * v2.y + v2.z * v2.z);
+        return dot / (v1Len * v2Len);
     }
 
     public void OnDragEnd()
     {
         ShowHideUI(false);
-        if (selectedObject != null)
-            selectedObject = null;
     }
 
     public void OnRotate(Vector3 diff)
     {
-        if (selectedObject != null)
+        if (mode == GameMode.ROTATE && selectedObject != null)
+        {
+            ShowUIAt(selectedObject.name);
             selectedObject.transform.Rotate(0, -diff.x, 0);
+        }
     }
 
     void Start()
@@ -60,16 +104,6 @@ public class GameBehaviour : MonoBehaviour
 
     void Init()
     {
-        Object[] objects = FindObjectsOfType(typeof(GameObject));
-        foreach (Object o in objects)
-        {
-            GameObject go = o as GameObject;
-            if (go.name.Equals("Canvas"))
-            {
-                canvas = go;
-                break;
-            }
-        }
         image = GetComponentInChildren<Image>();
         textMesh = GetComponentInChildren<TextMeshProUGUI>();
         ShowHideUI(false);
@@ -89,7 +123,7 @@ public class GameBehaviour : MonoBehaviour
 
     void ShowHideUI(bool show)
     {
-        if (canvas != null)
-            canvas.SetActive(show);
+        if (image != null)
+            image.gameObject.SetActive(show);
     }
 }

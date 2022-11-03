@@ -22,7 +22,7 @@ public class Android : Device
             gameBehaviour.OnDragStart(touch.position);
         }
         else if ((touch.phase == TouchPhase.Moved) && (prevDragFingerId == touch.fingerId))
-            gameBehaviour.OnDrag(new Vector3(touch.deltaPosition.x, touch.deltaPosition.y));
+            gameBehaviour.OnDrag(touch.position);
         else if (touch.phase == TouchPhase.Ended)
         {
             prevDragFingerId = -1;

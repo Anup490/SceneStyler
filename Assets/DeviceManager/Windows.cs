@@ -19,8 +19,8 @@ public class Windows : Device
         {
             if (hasPressedLMB)
             {
-                if (IsZero(lastMousePos)) lastMousePos = Input.mousePosition;
-                gameBehaviour.OnDrag(Input.mousePosition - lastMousePos);
+                if (Utils.IsZero(lastMousePos)) lastMousePos = Input.mousePosition;
+                gameBehaviour.OnDrag(Input.mousePosition);
                 lastMousePos = Input.mousePosition;
             }
             else
@@ -35,17 +35,5 @@ public class Windows : Device
             hasPressedLMB = false;
             gameBehaviour.OnDragEnd();
         }
-    }
-
-    bool IsZero(Vector3 vec)
-    {
-        const float epsilon = 0.00001f;
-        float diffx = vec.x - 0.0f;
-        float diffy = vec.y - 0.0f;
-        float diffz = vec.z - 0.0f;
-        if (diffx < 0.0f) diffx *= -1.0f;
-        if (diffy < 0.0f) diffy *= -1.0f;
-        if (diffz < 0.0f) diffz *= -1.0f;
-        return (diffx < epsilon) && (diffy < epsilon) && (diffz < epsilon);
     }
 }
