@@ -6,7 +6,6 @@ public class SliderBehaviour : MonoBehaviour
     GameBehaviour gameBehaviour;
     Slider slider; 
     float prevSliderValue;
-    float sliderVal;
 
     public void OnSliderChanged()
     {
@@ -17,16 +16,16 @@ public class SliderBehaviour : MonoBehaviour
 
     public void UpdateYaw(float val)
     {
-        sliderVal = val;
+        prevSliderValue = val;
         if (gameObject.activeSelf)
-            slider.SetValueWithoutNotify(sliderVal);
+            slider.SetValueWithoutNotify(prevSliderValue);
     }
 
     public void ShowHide(bool show)
     {
         gameObject.SetActive(show);
         if (show)
-            slider.SetValueWithoutNotify(sliderVal);
+            slider.SetValueWithoutNotify(prevSliderValue);
     }
 
     private void Start()
