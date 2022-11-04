@@ -14,10 +14,7 @@ class RotateBehaviour : ButtonBehaviour
         textMesh = GetComponentInChildren<TextMeshProUGUI>();
         GameObject sliderObject = GameObject.Find("Slider");
         if (sliderObject != null)
-        {
             slider = sliderObject.GetComponent<SliderBehaviour>();
-            slider.ShowHide(false);
-        }
     }
 
     public override void OnThisButtonClick()

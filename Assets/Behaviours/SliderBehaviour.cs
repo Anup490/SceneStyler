@@ -24,7 +24,7 @@ public class SliderBehaviour : MonoBehaviour
     public void ShowHide(bool show)
     {
         gameObject.SetActive(show);
-        if (show)
+        if (show && slider != null)
             slider.SetValueWithoutNotify(prevSliderValue);
     }
 
