@@ -9,23 +9,17 @@ public class Windows : Device
 
     public override void OnUpdate()
     {
-        if (Input.GetMouseButton(1))
-        {
-            Vector3 diff = Input.mousePosition - lastMousePos;
-            gameBehaviour.OnRotate(diff);
-            lastMousePos = Input.mousePosition;
-        }
-        else if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && Utils.IsNotTouchingUI(Input.mousePosition))
         {
             if (hasPressedLMB)
             {
-                if (Utils.IsZero(lastMousePos)) lastMousePos = Input.mousePosition;
-                gameBehaviour.OnDrag(Input.mousePosition);
+                if (Utils.IsZero(lastMousePos)) lastMousePos = Input.mousePosition;            
+                gameBehaviour.OnMouseDrag(Input.mousePosition);
                 lastMousePos = Input.mousePosition;
             }
             else
             {
-                gameBehaviour.OnDragStart(Input.mousePosition);
+                gameBehaviour.OnMouseClick(Input.mousePosition);
                 hasPressedLMB = true;
             }              
         }
@@ -33,7 +27,7 @@ public class Windows : Device
         {
             lastMousePos = Vector3.zero;
             hasPressedLMB = false;
-            gameBehaviour.OnDragEnd();
+            gameBehaviour.OnMouseRelease();
         }
     }
 }

@@ -9,30 +9,26 @@ public class Android : Device
     public override void OnUpdate()
     {
         if (Input.touchCount > 0)
-            OnFirstTouch(Input.GetTouch(0));
-        if (Input.touchCount > 1)
-            OnSecondTouch(Input.GetTouch(1));
+        {
+            Touch touch = Input.GetTouch(0);
+            if (Utils.IsNotTouchingUI(touch.position))
+                OnTouch(touch);
+        }
     }
 
-    void OnFirstTouch(Touch touch)
+    void OnTouch(Touch touch)
     {
         if ((touch.phase == TouchPhase.Began) && (prevDragFingerId == -1))
         {
             prevDragFingerId = touch.fingerId;
-            gameBehaviour.OnDragStart(touch.position);
+            gameBehaviour.OnMouseClick(touch.position);
         }
         else if ((touch.phase == TouchPhase.Moved) && (prevDragFingerId == touch.fingerId))
-            gameBehaviour.OnDrag(touch.position);
+            gameBehaviour.OnMouseDrag(touch.position);
         else if (touch.phase == TouchPhase.Ended)
         {
             prevDragFingerId = -1;
-            gameBehaviour.OnDragEnd();
+            gameBehaviour.OnMouseRelease();
         }
-    }
-
-    void OnSecondTouch(Touch touch)
-    {
-        if (touch.phase == TouchPhase.Moved)
-            gameBehaviour.OnRotate(touch.deltaPosition);   
     }
 }

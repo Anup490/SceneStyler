@@ -6,12 +6,20 @@ public class WallMovementBehaviour : AssetBehaviour
     const float maxx = 9.0f;
     const float miny = 0.5f;
     const float maxy = 4.5f;
+    Vector3 deltaPosition;
 
     public override void Displace(Vector3 targetPosition)
     {
         Vector3 newPosition = new Vector3(targetPosition.x, targetPosition.y, transform.position.z);
-        if (IsWithinBounds(newPosition))
-            transform.position = newPosition;
+        if (Utils.IsZero(deltaPosition))
+            deltaPosition = newPosition - transform.position;
+        else if (IsWithinBounds(newPosition))
+            transform.position = newPosition - deltaPosition;
+    }
+
+    public override void OnUnselect()
+    {
+        deltaPosition = Vector3.zero;
     }
 
     bool IsWithinBounds(Vector3 newPos)

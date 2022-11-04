@@ -25,5 +25,6 @@ abstract class ButtonBehaviour : MonoBehaviour
         buttonManager = ButtonManager.Get();
         buttonIndex = buttonManager.Register(this);
         OnStart();
+        buttonManager.OnClick(0);
     }
 }
