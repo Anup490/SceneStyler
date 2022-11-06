@@ -5,7 +5,8 @@ public class GameBehaviour : MonoBehaviour
     Camera cam;
     AssetBehaviour selectedAsset;
     Device device;
-    UIManager uiManager;
+
+    UIBehaviour uiBehaviour;
     RayCastManager rayCastManager;
     GameMode mode = GameMode.DRAG;
 
@@ -38,11 +39,11 @@ public class GameBehaviour : MonoBehaviour
         selectedAsset = rayCastManager.DetectAsset(position, mode == GameMode.DRAG);
         if (selectedAsset != null)
         {
-            uiManager.ShowLabelAt(selectedAsset.gameObject.name);
-            uiManager.SetSliderValue(selectedAsset.yaw);
+            uiBehaviour.ShowLabelAt(selectedAsset.gameObject.name);
+            uiBehaviour.SetSliderValue(selectedAsset.yaw);
         }
         else if (mode == GameMode.DRAG)
-            uiManager.ShowHideLabel(false); 
+            uiBehaviour.ShowHideLabel(false); 
     }
 
     public void OnMouseDrag(Vector3 position)
@@ -71,7 +72,7 @@ public class GameBehaviour : MonoBehaviour
     void Init()
     {      
         device = (SystemInfo.deviceType == DeviceType.Handheld) ? new Android(this) : new Windows(this);
-        uiManager = new UIManager(gameObject);
+        uiBehaviour = GetComponentInChildren<UIBehaviour>();
         rayCastManager = new RayCastManager(cam);
     }
 }

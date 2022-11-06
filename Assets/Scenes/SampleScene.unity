@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 14982642}
   - component: {fileID: 14982641}
   - component: {fileID: 14982640}
+  - component: {fileID: 14982643}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -227,6 +228,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &14982643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14982638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a120a6f5095561d4aa0f093717af115a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &198503200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -353,7 +366,6 @@ GameObject:
   - component: {fileID: 287478858}
   - component: {fileID: 287478857}
   - component: {fileID: 287478856}
-  - component: {fileID: 287478859}
   m_Layer: 5
   m_Name: DragButton
   m_TagString: Untagged
@@ -426,9 +438,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 287478859}
-        m_TargetAssemblyTypeName: ButtonBehaviour, Assembly-CSharp
-        m_MethodName: OnClick
+      - m_Target: {fileID: 14982643}
+        m_TargetAssemblyTypeName: UIBehaviour, Assembly-CSharp
+        m_MethodName: OnDrag
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -476,18 +488,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 287478854}
   m_CullTransparentMesh: 1
---- !u!114 &287478859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 287478854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b62d96d5d38c7f49b7bdca9305ac8ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &518948560
 GameObject:
   m_ObjectHideFlags: 0
@@ -635,7 +635,6 @@ GameObject:
   - component: {fileID: 664553734}
   - component: {fileID: 664553733}
   - component: {fileID: 664553732}
-  - component: {fileID: 664553735}
   m_Layer: 5
   m_Name: RotateButton
   m_TagString: Untagged
@@ -708,9 +707,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 664553735}
-        m_TargetAssemblyTypeName: ButtonBehaviour, Assembly-CSharp
-        m_MethodName: OnClick
+      - m_Target: {fileID: 14982643}
+        m_TargetAssemblyTypeName: UIBehaviour, Assembly-CSharp
+        m_MethodName: OnRotate
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -758,18 +757,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 664553730}
   m_CullTransparentMesh: 1
---- !u!114 &664553735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 664553730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6be59ec746b59104ebfc73d4fe81fae7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1894,7 +1881,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2042454431}
   - component: {fileID: 2042454432}
-  - component: {fileID: 2042454433}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -1976,8 +1962,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2042454433}
-        m_TargetAssemblyTypeName: SliderBehaviour, Assembly-CSharp
+      - m_Target: {fileID: 14982643}
+        m_TargetAssemblyTypeName: UIBehaviour, Assembly-CSharp
         m_MethodName: OnSliderChanged
         m_Mode: 1
         m_Arguments:
@@ -1988,18 +1974,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2042454433
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2042454430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 173f4f4a9e721384a929a0d5fc9f0328, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2094507393
 GameObject:
   m_ObjectHideFlags: 0
