@@ -20,11 +20,6 @@ public class GameBehaviour : MonoBehaviour
         mode = gameMode;
     }
 
-    public AssetBehaviour GetSelectedAsset()
-    {
-        return selectedAsset;
-    }
-
     public void OnSliderChange(float yaw, float sliderVal)
     {
         if (selectedAsset != null)

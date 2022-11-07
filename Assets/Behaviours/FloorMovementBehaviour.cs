@@ -6,7 +6,6 @@ public class FloorMovementBehaviour : AssetBehaviour
     const float maxx = 3.0f;
     const float minz = -9.0f;
     const float maxz = -4.5f;
-    Vector3 deltaPosition;
 
     public override void Displace(Vector3 targetPosition)
     {

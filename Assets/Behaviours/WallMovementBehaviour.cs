@@ -6,7 +6,6 @@ public class WallMovementBehaviour : AssetBehaviour
     const float maxx = 9.0f;
     const float miny = 0.5f;
     const float maxy = 4.5f;
-    Vector3 deltaPosition;
 
     public override void Displace(Vector3 targetPosition)
     {
