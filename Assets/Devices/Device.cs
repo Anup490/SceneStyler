@@ -2,27 +2,12 @@
 
 public abstract class Device
 {
-    protected GameBehaviour gameBehaviour;
-    protected bool isSideBarVisible;
+    protected DeviceHandler handler;
 
-    public Device(GameBehaviour behaviour)
+    public Device(DeviceHandler deviceHandler)
     {
-        gameBehaviour = behaviour;
+        handler = deviceHandler;
     }
 
     public abstract void OnUpdate();
-
-    public void UpdateSideBarVisibility(bool visibility)
-    {
-        isSideBarVisible = visibility;
-    }
-
-    protected bool IsNotTouchingSideBar(Vector3 cursorPos)
-    {
-        Vector2 screenPos = Utils.ToScreenSpace(cursorPos);
-        float limit = Screen.width * 0.75f;
-        if (isSideBarVisible)
-            return cursorPos.x < limit;
-        return true;
-    }
 }

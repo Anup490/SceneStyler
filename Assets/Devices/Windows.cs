@@ -4,40 +4,30 @@ public class Windows : Device
 {
     Vector3 lastMousePos;
     bool hasPressedLMB = false;
-    bool hasClickedUI = false;
-
-    public Windows(GameBehaviour gameBehaviour) : base(gameBehaviour) {}
+    
+    public Windows(DeviceHandler deviceHandler) : base(deviceHandler) {}
 
     public override void OnUpdate()
     {
-        if (Input.GetMouseButton(0) && Utils.IsNotTouchingUI(Input.mousePosition))
+        if (Input.GetMouseButton(0))
         {
-            if (hasPressedLMB && IsNotTouchingSideBar(Input.mousePosition))
+            if (hasPressedLMB)
             {
                 if (Utils.IsZero(lastMousePos)) lastMousePos = Input.mousePosition;
-                gameBehaviour.OnMouseDrag(Input.mousePosition);
+                handler.OnDrag(Input.mousePosition);
                 lastMousePos = Input.mousePosition;
             }
             else
             {
-                if (IsNotTouchingSideBar(Input.mousePosition))
-                {
-                    gameBehaviour.OnMouseClick(Input.mousePosition, false);
-                    hasPressedLMB = true;
-                }
-                else if (!hasClickedUI)
-                {
-                    gameBehaviour.OnMouseClick(Input.mousePosition, true);
-                    hasClickedUI = true;
-                }
+                handler.OnClick(Input.mousePosition);
+                hasPressedLMB = true;
             }              
         }  
         else
         {
             lastMousePos = Vector3.zero;
             hasPressedLMB = false;
-            hasClickedUI = false;
-            gameBehaviour.OnMouseRelease();
+            handler.OnRelease();
         }
     }
 }

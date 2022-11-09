@@ -4,25 +4,27 @@ using UnityEngine.UI;
 
 public class UIBehaviour : MonoBehaviour
 {
+    public GameObject parentObject;
+    public GameObject dragButtonObject;
+    public GameObject rotateButtonObject;
+    public GameObject sliderObject;
+    public GameObject sideBarObject;
+    public GameObject rawImageObject;
+
     GameBehaviour gameBehaviour;
     Image dragButtonBackground;
     TextMeshProUGUI dragTextMesh;
-
     Image rotateButtonBackground;
     TextMeshProUGUI rotateTextMesh;
-
-    GameObject sliderObject;
     Slider slider;
-
     float prevSliderValue;
-
     SideBarManager sideBarManager;
 
     public void OnDrag()
     {
         dragButtonBackground.color = Color.black;
         dragTextMesh.color = Color.white;
-        gameBehaviour.SetGameMode(GameBehaviour.GameMode.DRAG);
+        gameBehaviour.SetControlMode(GameBehaviour.ControlMode.DRAG);
 
         rotateButtonBackground.color = Color.white;
         rotateTextMesh.color = Color.black;
@@ -33,7 +35,7 @@ public class UIBehaviour : MonoBehaviour
     {
         rotateButtonBackground.color = Color.black;
         rotateTextMesh.color = Color.white;
-        gameBehaviour.SetGameMode(GameBehaviour.GameMode.ROTATE);
+        gameBehaviour.SetControlMode(GameBehaviour.ControlMode.ROTATE);
         ShowHideSlider(true);
 
         dragButtonBackground.color = Color.white;
@@ -76,17 +78,14 @@ public class UIBehaviour : MonoBehaviour
 
     void Start()
     {
-        gameBehaviour = GetComponentInParent<GameBehaviour>();
-        GameObject dragButtonObject = GameObject.Find("DragButton");
+        gameBehaviour = parentObject.GetComponent<GameBehaviour>();
         dragButtonBackground = dragButtonObject.GetComponent<Image>();
         dragTextMesh = dragButtonObject.GetComponentInChildren<TextMeshProUGUI>();
-        GameObject rotateButtonObject = GameObject.Find("RotateButton");
         rotateButtonBackground = rotateButtonObject.GetComponent<Image>();
         rotateTextMesh = rotateButtonObject.GetComponentInChildren<TextMeshProUGUI>();
-        sliderObject = GameObject.Find("Slider");
         slider = sliderObject.GetComponent<Slider>();
         ShowHideSlider(false);
-        sideBarManager = new SideBarManager(GameObject.Find("SideBar"));
+        sideBarManager = new SideBarManager(sideBarObject, rawImageObject);
     }
 
     void Update()

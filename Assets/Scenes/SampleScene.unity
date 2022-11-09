@@ -240,6 +240,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a120a6f5095561d4aa0f093717af115a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentObject: {fileID: 963194225}
+  dragButtonObject: {fileID: 287478854}
+  rotateButtonObject: {fileID: 664553730}
+  sliderObject: {fileID: 2042454430}
+  sideBarObject: {fileID: 597012783}
+  rawImageObject: {fileID: 1973482788}
 --- !u!1 &193367357
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,7 +282,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 150}
-  m_SizeDelta: {x: 100, y: 20}
+  m_SizeDelta: {x: 200, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &193367359
 MonoBehaviour:
@@ -331,7 +337,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 17
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535

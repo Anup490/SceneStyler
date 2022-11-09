@@ -15,7 +15,7 @@ class SideBarManager
 
     readonly float maxWidth;
 
-    public SideBarManager(GameObject sideBarObject)
+    public SideBarManager(GameObject sideBarObject, GameObject rawImageObject)
     {
         Image background = sideBarObject.GetComponent<Image>();
         textMesh = sideBarObject.GetComponentInChildren<TextMeshProUGUI>();
@@ -23,7 +23,6 @@ class SideBarManager
         rectTransform = background.rectTransform;
         rectTransform.sizeDelta = new Vector2(0.0f, rectTransform.sizeDelta.y);
         maxWidth = Screen.width / 4.0f;
-        GameObject rawImageObject = GameObject.Find("RawImage");
         gridManager = new GridManager(sideBarObject, rawImageObject, OnGridItemSelect);
     }
 

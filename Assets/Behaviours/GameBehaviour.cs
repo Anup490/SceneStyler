@@ -1,22 +1,22 @@
 using UnityEngine;
 
-public class GameBehaviour : MonoBehaviour
+public class GameBehaviour : MonoBehaviour, IDeviceCallback
 {
     public GameObject uiBehaviourObject;
 
     Camera cam;
     AssetBehaviour selectedAsset;
-    Device device;
+    DeviceHandler deviceHandler;
     UIBehaviour uiBehaviour;
     RayCastManager rayCastManager;
-    GameMode mode = GameMode.DRAG;
+    ControlMode mode = ControlMode.DRAG;
 
-    public enum GameMode
+    public enum ControlMode
     {
         DRAG, ROTATE
     }
 
-    public void SetGameMode(GameMode gameMode)
+    public void SetControlMode(ControlMode gameMode)
     {
         mode = gameMode;
     }
@@ -30,34 +30,34 @@ public class GameBehaviour : MonoBehaviour
         }
     }
 
-    public void OnMouseClick(Vector3 position, bool onUI)
+    public void OnWorldClick(Vector3 position)
     {
-        if (onUI)
-            uiBehaviour.OnUIClick(position);
-        else
+        selectedAsset = rayCastManager.DetectAsset(position, mode == ControlMode.DRAG);
+        if (selectedAsset != null)
         {
-            selectedAsset = rayCastManager.DetectAsset(position, mode == GameMode.DRAG);
-            if (selectedAsset != null)
-            {
-                uiBehaviour.SetSliderValue(selectedAsset.yaw);
-                uiBehaviour.ShowHideSideBar(true, selectedAsset);
-                device.UpdateSideBarVisibility(true);
-            }
-            else if (mode == GameMode.DRAG)
-            {
-                uiBehaviour.ShowHideSideBar(false, selectedAsset);
-                device.UpdateSideBarVisibility(false);
-            }
-        }   
+            uiBehaviour.SetSliderValue(selectedAsset.yaw);
+            uiBehaviour.ShowHideSideBar(true, selectedAsset);
+            deviceHandler.UpdateSideBarVisibility(true);
+        }
+        else if (mode == ControlMode.DRAG)
+        {
+            uiBehaviour.ShowHideSideBar(false, selectedAsset);
+            deviceHandler.UpdateSideBarVisibility(false);
+        }
     }
 
-    public void OnMouseDrag(Vector3 position)
+    public void OnUIClick(Vector3 position)
     {
-        if (mode == GameMode.DRAG && selectedAsset != null)
+        uiBehaviour.OnUIClick(position);
+    }
+
+    public void OnDrag(Vector3 position)
+    {
+        if (mode == ControlMode.DRAG && selectedAsset != null)
             selectedAsset.Displace(rayCastManager.GetTargetPosition(position, selectedAsset.transform.position));      
     }
 
-    public void OnMouseRelease()
+    public void OnRelease()
     {
         if (selectedAsset != null)
             selectedAsset.OnUnselect();            
@@ -71,12 +71,12 @@ public class GameBehaviour : MonoBehaviour
 
     void Update()
     {
-        device.OnUpdate();
+        deviceHandler.OnUpdate();
     }
 
     void Init()
     {      
-        device = (SystemInfo.deviceType == DeviceType.Handheld) ? new Android(this) : new Windows(this);
+        deviceHandler = DeviceHandler.Get(this);
         uiBehaviour = uiBehaviourObject.GetComponent<UIBehaviour>();
         rayCastManager = new RayCastManager(cam);
     }
