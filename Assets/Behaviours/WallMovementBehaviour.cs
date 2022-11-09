@@ -16,6 +16,12 @@ public class WallMovementBehaviour : AssetBehaviour
             transform.position = newPosition - deltaPosition;
     }
 
+    public override void Rotate(Vector3 targetRotation, float yawDisplay)
+    {
+        transform.Rotate(targetRotation);
+        yaw = yawDisplay;
+    }
+
     public override void OnUnselect()
     {
         deltaPosition = Vector3.zero;

@@ -140,3 +140,30 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4, y: 6.000002, z: 0.012000003}
   m_Center: {x: 0, y: 0, z: 0.0060000014}
+--- !u!114 &8155734897990307694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005508902655544198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae7fdaad82db38949932f564d9222ab9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textures:
+  - {fileID: 2800000, guid: 89a474bf39fe8c947a12de353b2ca773, type: 3}
+  - {fileID: 2800000, guid: 3f88fa17cf14b994e9171dcc37c639be, type: 3}
+  - {fileID: 2800000, guid: 96691d85ba3baa74b9147d36f5870698, type: 3}
+  - {fileID: 2800000, guid: e8e6d43b93f1983418b3b5935565df85, type: 3}
+  - {fileID: 2800000, guid: 62bb49c18004ae44a9a0cf1a733f26a0, type: 3}
+  - {fileID: 2800000, guid: dffef66376be4fa480fb02b19edbe903, type: 3}
+  - {fileID: 2800000, guid: d7ae3454cde58df4688b4495edc89433, type: 3}
+  - {fileID: 2800000, guid: 13458c0bbd222cd4b889a20d6036106c, type: 3}
+  - {fileID: 2800000, guid: 266a0b68fa6964a459b10b5de24c1490, type: 3}
+  - {fileID: 2800000, guid: 3d71f2c6fe5feaa4eaeef5cf79f282f4, type: 3}
+  - {fileID: 2800000, guid: 2cdd687f824decf4cb1b5cbc863e1ac3, type: 3}
+  children:
+  - {fileID: 3005508902655544198}
+  materialName: Carpet REF

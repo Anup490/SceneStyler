@@ -24,10 +24,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
     public void RotateAsset(float yaw, float yawDisplay)
     {
         if (selectedAsset != null)
-        {
-            selectedAsset.transform.Rotate(0, yaw, 0);
-            selectedAsset.yaw = yawDisplay;
-        }
+            selectedAsset.Rotate(new Vector3(0, yaw, 0), yawDisplay);
     }
 
     public void OnWorldClick(Vector3 position)
