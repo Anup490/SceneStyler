@@ -111,3 +111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85d3775b15ecdd45978d810edf61d75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textures:
+  - {fileID: 2800000, guid: 2abf12279b4d19442bdbdc71a10a5ec0, type: 3}
+  - {fileID: 2800000, guid: 7a36851f88713b64c8bea69a68ed7714, type: 3}
+  children:
+  - {fileID: 4488099367047916202}

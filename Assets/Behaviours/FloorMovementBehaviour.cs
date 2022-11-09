@@ -21,6 +21,11 @@ public class FloorMovementBehaviour : AssetBehaviour
         deltaPosition = Vector3.zero;
     }
 
+    public override string GetDescription()
+    {
+        return gameObject.name;
+    }
+
     bool IsWithinBounds(Vector3 newPos)
     {
         float zdiff = transform.position.z - minz;

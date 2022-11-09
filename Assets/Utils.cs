@@ -34,5 +34,10 @@ class Utils
         float h = cursorPos.y / Screen.height;
         return w < 0.85f || h < 0.85f;
     }
+
+    public static Vector2 ToScreenSpace(Vector3 rasterCoord)
+    {
+        return new Vector2(rasterCoord.x / Screen.width, rasterCoord.y / Screen.height);
+    }
 }
 

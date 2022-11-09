@@ -4,9 +4,6 @@ using UnityEngine.UI;
 
 public class UIBehaviour : MonoBehaviour
 {
-    Image labelImage;
-    TextMeshProUGUI labelTextMesh;
-
     GameBehaviour gameBehaviour;
     Image dragButtonBackground;
     TextMeshProUGUI dragTextMesh;
@@ -19,22 +16,7 @@ public class UIBehaviour : MonoBehaviour
 
     float prevSliderValue;
 
-    void Start()
-    {
-        labelImage = GetComponentInChildren<Image>();
-        labelTextMesh = GetComponentInChildren<TextMeshProUGUI>();
-        ShowHideLabel(false);
-        gameBehaviour = GetComponentInParent<GameBehaviour>();
-        GameObject dragButtonObject = GameObject.Find("DragButton");
-        dragButtonBackground = dragButtonObject.GetComponent<Image>();
-        dragTextMesh = dragButtonObject.GetComponentInChildren<TextMeshProUGUI>();
-        GameObject rotateButtonObject = GameObject.Find("RotateButton");
-        rotateButtonBackground = rotateButtonObject.GetComponent<Image>();
-        rotateTextMesh = rotateButtonObject.GetComponentInChildren<TextMeshProUGUI>();
-        sliderObject = GameObject.Find("Slider");
-        slider = sliderObject.GetComponent<Slider>();
-        ShowHideSlider(false);
-    }
+    SideBarManager sideBarManager;
 
     public void OnDrag()
     {
@@ -61,25 +43,8 @@ public class UIBehaviour : MonoBehaviour
     public void OnSliderChanged()
     {
         float valDiff = slider.value - prevSliderValue;
-        gameBehaviour.OnSliderChange(valDiff * 360.0f, slider.value);
+        gameBehaviour.RotateAsset(valDiff * 360.0f, slider.value);
         prevSliderValue = slider.value;
-    }
-
-    public void ShowLabelAt(string text)
-    {
-        int width = 50 + text.Length * 5;
-        ShowHideLabel(true);
-        labelTextMesh.text = text;
-        RectTransform rectTransformImage = labelImage.rectTransform;
-        rectTransformImage.sizeDelta = new Vector2(width, 20);
-        RectTransform rectTransformText = labelTextMesh.rectTransform;
-        rectTransformText.sizeDelta = new Vector2(width, 20);
-    }
-
-    public void ShowHideLabel(bool show)
-    {
-        if (labelImage != null)
-            labelImage.gameObject.SetActive(show);
     }
 
     public void SetSliderValue(float val)
@@ -94,5 +59,38 @@ public class UIBehaviour : MonoBehaviour
         sliderObject.SetActive(show);
         if (show && slider != null)
             slider.SetValueWithoutNotify(prevSliderValue);
+    }
+
+    public void ShowHideSideBar(bool show, AssetBehaviour asset)
+    {
+        if (asset == null)
+            sideBarManager.ShowHide(false, null);
+        else       
+            sideBarManager.ShowHide(show, asset);
+    }
+
+    public void OnUIClick(Vector3 worldPosition)
+    {
+        sideBarManager.OnSideBarClick(worldPosition);
+    }
+
+    void Start()
+    {
+        gameBehaviour = GetComponentInParent<GameBehaviour>();
+        GameObject dragButtonObject = GameObject.Find("DragButton");
+        dragButtonBackground = dragButtonObject.GetComponent<Image>();
+        dragTextMesh = dragButtonObject.GetComponentInChildren<TextMeshProUGUI>();
+        GameObject rotateButtonObject = GameObject.Find("RotateButton");
+        rotateButtonBackground = rotateButtonObject.GetComponent<Image>();
+        rotateTextMesh = rotateButtonObject.GetComponentInChildren<TextMeshProUGUI>();
+        sliderObject = GameObject.Find("Slider");
+        slider = sliderObject.GetComponent<Slider>();
+        ShowHideSlider(false);
+        sideBarManager = new SideBarManager(GameObject.Find("SideBar"));
+    }
+
+    void Update()
+    {
+        sideBarManager.OnUpdate(this);  
     }
 }

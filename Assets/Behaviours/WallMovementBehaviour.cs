@@ -21,6 +21,11 @@ public class WallMovementBehaviour : AssetBehaviour
         deltaPosition = Vector3.zero;
     }
 
+    public override string GetDescription()
+    {
+        return gameObject.name;
+    }
+
     bool IsWithinBounds(Vector3 newPos)
     {
         return newPos.x > minx && newPos.x < maxx && newPos.y > miny && newPos.y < maxy;

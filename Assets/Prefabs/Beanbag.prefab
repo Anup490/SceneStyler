@@ -139,6 +139,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95a8b96c35edf184c9ee9e5126a27e46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textures:
+  - {fileID: 2800000, guid: dffef66376be4fa480fb02b19edbe903, type: 3}
+  - {fileID: 2800000, guid: 89a474bf39fe8c947a12de353b2ca773, type: 3}
+  children:
+  - {fileID: 482791890339943044}
 --- !u!4 &7062280767353079957 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 25701a8bf595e734ca23ef64696ddfa6, type: 3}

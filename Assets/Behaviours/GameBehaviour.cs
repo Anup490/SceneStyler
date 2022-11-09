@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class GameBehaviour : MonoBehaviour
 {
+    public GameObject uiBehaviourObject;
+
     Camera cam;
     AssetBehaviour selectedAsset;
     Device device;
-
     UIBehaviour uiBehaviour;
     RayCastManager rayCastManager;
     GameMode mode = GameMode.DRAG;
@@ -20,25 +21,34 @@ public class GameBehaviour : MonoBehaviour
         mode = gameMode;
     }
 
-    public void OnSliderChange(float yaw, float sliderVal)
+    public void RotateAsset(float yaw, float yawDisplay)
     {
         if (selectedAsset != null)
         {
             selectedAsset.transform.Rotate(0, yaw, 0);
-            selectedAsset.yaw = sliderVal;
+            selectedAsset.yaw = yawDisplay;
         }
     }
 
-    public void OnMouseClick(Vector3 position)
+    public void OnMouseClick(Vector3 position, bool onUI)
     {
-        selectedAsset = rayCastManager.DetectAsset(position, mode == GameMode.DRAG);
-        if (selectedAsset != null)
+        if (onUI)
+            uiBehaviour.OnUIClick(position);
+        else
         {
-            uiBehaviour.ShowLabelAt(selectedAsset.gameObject.name);
-            uiBehaviour.SetSliderValue(selectedAsset.yaw);
-        }
-        else if (mode == GameMode.DRAG)
-            uiBehaviour.ShowHideLabel(false); 
+            selectedAsset = rayCastManager.DetectAsset(position, mode == GameMode.DRAG);
+            if (selectedAsset != null)
+            {
+                uiBehaviour.SetSliderValue(selectedAsset.yaw);
+                uiBehaviour.ShowHideSideBar(true, selectedAsset);
+                device.UpdateSideBarVisibility(true);
+            }
+            else if (mode == GameMode.DRAG)
+            {
+                uiBehaviour.ShowHideSideBar(false, selectedAsset);
+                device.UpdateSideBarVisibility(false);
+            }
+        }   
     }
 
     public void OnMouseDrag(Vector3 position)
@@ -67,7 +77,7 @@ public class GameBehaviour : MonoBehaviour
     void Init()
     {      
         device = (SystemInfo.deviceType == DeviceType.Handheld) ? new Android(this) : new Windows(this);
-        uiBehaviour = GetComponentInChildren<UIBehaviour>();
+        uiBehaviour = uiBehaviourObject.GetComponent<UIBehaviour>();
         rayCastManager = new RayCastManager(cam);
     }
 }

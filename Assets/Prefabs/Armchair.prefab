@@ -125,6 +125,21 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 5eb66bfdb1773974992886d2196229ce, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: def6e34bbee13784d9603687055b3aad, type: 3}
+--- !u!1 &964676088992485669 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5796268258100392296, guid: def6e34bbee13784d9603687055b3aad, type: 3}
+  m_PrefabInstance: {fileID: 6706788450995527757}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3176726303088438448 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8144394004440419581, guid: def6e34bbee13784d9603687055b3aad, type: 3}
+  m_PrefabInstance: {fileID: 6706788450995527757}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3426894129094534902 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -964462453519104325, guid: def6e34bbee13784d9603687055b3aad, type: 3}
+  m_PrefabInstance: {fileID: 6706788450995527757}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5895815947860237596 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: def6e34bbee13784d9603687055b3aad, type: 3}
@@ -155,6 +170,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95a8b96c35edf184c9ee9e5126a27e46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textures:
+  - {fileID: 2800000, guid: dffef66376be4fa480fb02b19edbe903, type: 3}
+  - {fileID: 2800000, guid: 7a36851f88713b64c8bea69a68ed7714, type: 3}
+  children:
+  - {fileID: 964676088992485669}
+  - {fileID: 3176726303088438448}
+  - {fileID: 3426894129094534902}
 --- !u!4 &6528519557198022566 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: def6e34bbee13784d9603687055b3aad, type: 3}
