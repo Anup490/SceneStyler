@@ -1,23 +1,41 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class UIManager
 {
+    public delegate void OnBack();
+
     static UIManager manager;
 
     List<WidgetBehaviour> widgets;
     UIBehaviour uiBehaviour;
+    GameBehaviour gameBehaviour;
 
-    public static UIManager Get(UIBehaviour behaviour)
+    public enum ActionType
+    {
+        DRAG, ROTATE, ZOOM
+    }
+
+    public static UIManager Get()
     {
         if (manager == null)
-            manager = new UIManager(behaviour);
+            manager = new UIManager();
         return manager;
     }
 
-    UIManager(UIBehaviour behaviour)
+    UIManager()
     {
         widgets = new List<WidgetBehaviour>();
+    }
+
+    public void AddUI(UIBehaviour behaviour)
+    {
         uiBehaviour = behaviour;
+    }
+
+    public void AddGame(GameBehaviour behaviour)
+    {
+        gameBehaviour = behaviour;
     }
 
     public int RegisterWidget(WidgetBehaviour widget)
@@ -34,6 +52,7 @@ public class UIManager
                 widgets[i].OnUnselect();
         }
     }
+
     public void ShowHideOtherButtons(int index, bool show)
     {
         for (int i = 0; i < widgets.Count; i++)
@@ -43,7 +62,50 @@ public class UIManager
         }
     }
 
-    public WidgetBehaviour GetWidget(UIBehaviour.ActionType actionType)
+    public void SetControlMode(UIManager.ActionType mode)
+    {
+        if (gameBehaviour != null)
+            gameBehaviour.SetControlMode(mode);
+    }
+
+    public void NotifyRotation(float rotValue, float rotDisplayValue)
+    {
+        if (gameBehaviour != null)
+            gameBehaviour.RotateAsset(rotValue, rotDisplayValue);
+    }
+
+    public void OnZoomIn(OnBack funcOnBack)
+    {
+        ZoomButtonBehaviour zoomButton = GetWidget(UIManager.ActionType.ZOOM) as ZoomButtonBehaviour;
+        if (zoomButton)
+            zoomButton.NotifyZoomAction(funcOnBack);
+    }
+
+    public void SetSliderValue(float val)
+    {
+        RotateButtonBehaviour rotateButton = GetWidget(UIManager.ActionType.ROTATE) as RotateButtonBehaviour;
+        if (rotateButton)
+            rotateButton.SetSliderValue(val);
+    }
+
+    public void ShowHideSideBar(bool show, AssetBehaviour asset)
+    {
+        if (uiBehaviour)
+        {
+            if (asset == null)
+                uiBehaviour.ShowHideSideBar(false, null);
+            else
+                uiBehaviour.ShowHideSideBar(show, asset);
+        }
+    }
+
+    public void OnUIClick(Vector3 worldPosition)
+    {
+        if (uiBehaviour != null)
+            uiBehaviour.OnUIClick(worldPosition);
+    }
+
+    WidgetBehaviour GetWidget(ActionType actionType)
     {
         foreach (WidgetBehaviour widget in widgets)
         {
@@ -51,20 +113,5 @@ public class UIManager
                 return widget;
         }
         return null;
-    }
-
-    public void SetControlMode(UIBehaviour.ActionType mode)
-    {
-        uiBehaviour.SetControlMode(mode);
-    }
-
-    public void NotifyRotation(float rotValue, float rotDisplayValue)
-    {
-        uiBehaviour.NotifyRotation(rotValue, rotDisplayValue);
-    }
-
-    public void NotifyZoomOut()
-    {
-        uiBehaviour.NotifyZoomOut();
     }
 }

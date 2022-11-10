@@ -21,9 +21,9 @@ public class DragButtonBehaviour : WidgetBehaviour
         dragTextMesh.color = Color.black;
     }
 
-    public override UIBehaviour.ActionType GetActionType()
+    public override UIManager.ActionType GetActionType()
     {
-        return UIBehaviour.ActionType.DRAG;
+        return UIManager.ActionType.DRAG;
     }
 
     public void OnDrag()
@@ -31,6 +31,6 @@ public class DragButtonBehaviour : WidgetBehaviour
         dragButtonBackground.color = Color.black;
         dragTextMesh.color = Color.white;
         uiManager.OnWidgetSelect(index);
-        uiManager.SetControlMode(UIBehaviour.ActionType.DRAG);
+        uiManager.SetControlMode(UIManager.ActionType.DRAG);
     }
 }

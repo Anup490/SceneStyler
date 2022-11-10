@@ -9,6 +9,7 @@ public class ZoomButtonBehaviour : WidgetBehaviour
     Image zoomButtonBackground;
     TextMeshProUGUI zoomTextMesh;
     bool isZoomedIn;
+    UIManager.OnBack funcOnBack;
 
     public override void OnStart()
     {
@@ -22,36 +23,38 @@ public class ZoomButtonBehaviour : WidgetBehaviour
         zoomTextMesh.color = Color.black;
     }
 
-    public override UIBehaviour.ActionType GetActionType()
+    public override UIManager.ActionType GetActionType()
     {
-        return UIBehaviour.ActionType.ZOOM;
+        return UIManager.ActionType.ZOOM;
     }
 
     public void OnZoom()
     {
         if (isZoomedIn)
-            OnZoomOut();
+            OnBack();
         else
         {
             zoomButtonBackground.color = Color.black;
             zoomTextMesh.color = Color.white;
             uiManager.OnWidgetSelect(index);
-            uiManager.SetControlMode(UIBehaviour.ActionType.ZOOM);
+            uiManager.SetControlMode(UIManager.ActionType.ZOOM);
         }
     }
 
-    public void OnZoomIn()
+    public void NotifyZoomAction(UIManager.OnBack fOnBack)
     {
         zoomTextMesh.text = "BACK";
         uiManager.ShowHideOtherButtons(index, false);
         isZoomedIn = true;
+        funcOnBack = fOnBack;
     }
 
-    public void OnZoomOut()
+    public void OnBack()
     {
         zoomTextMesh.text = "ZOOM";
         uiManager.ShowHideOtherButtons(index, true);
         isZoomedIn = false;
-        uiManager.NotifyZoomOut();
+        if (funcOnBack != null)
+            funcOnBack();
     }
 }

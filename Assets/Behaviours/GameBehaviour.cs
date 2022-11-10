@@ -3,19 +3,17 @@ using UnityEngine;
 
 public class GameBehaviour : MonoBehaviour, IDeviceCallback
 {
-    public GameObject uiBehaviourObject;
-
     Camera cam;
     AssetBehaviour selectedAsset;
     DeviceHandler deviceHandler;
-    UIBehaviour uiBehaviour;
+    UIManager uiManager;
     RayCastManager rayCastManager;
-    UIBehaviour.ActionType mode = UIBehaviour.ActionType.DRAG;
+    UIManager.ActionType mode = UIManager.ActionType.DRAG;
     Vector3 originalPosition;
     Quaternion originalRotation;
     bool hasZoomedIn;
 
-    public void SetControlMode(UIBehaviour.ActionType gameMode)
+    public void SetControlMode(UIManager.ActionType gameMode)
     {
         mode = gameMode;
     }
@@ -28,29 +26,29 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
 
     public void OnWorldClick(Vector3 position)
     {
-        selectedAsset = rayCastManager.DetectAsset(position, mode == UIBehaviour.ActionType.DRAG);
+        selectedAsset = rayCastManager.DetectAsset(position, mode == UIManager.ActionType.DRAG);
         if (selectedAsset != null)
         {
-            uiBehaviour.SetSliderValue(selectedAsset.yaw);
-            uiBehaviour.ShowHideSideBar(true, selectedAsset);
+            uiManager.SetSliderValue(selectedAsset.yaw);
+            uiManager.ShowHideSideBar(true, selectedAsset);
             deviceHandler.UpdateSideBarVisibility(true);
             ZoomIn();
         }
-        else if (mode == UIBehaviour.ActionType.DRAG)
+        else if (mode == UIManager.ActionType.DRAG)
         {
-            uiBehaviour.ShowHideSideBar(false, selectedAsset);
+            uiManager.ShowHideSideBar(false, selectedAsset);
             deviceHandler.UpdateSideBarVisibility(false);
         }
     }
 
     public void OnUIClick(Vector3 position)
     {
-        uiBehaviour.OnUIClick(position);
+        uiManager.OnUIClick(position);
     }
 
     public void OnDrag(Vector3 position)
     {
-        if (mode == UIBehaviour.ActionType.DRAG && selectedAsset != null)
+        if (mode == UIManager.ActionType.DRAG && selectedAsset != null)
             selectedAsset.Displace(rayCastManager.GetTargetPosition(position, selectedAsset.transform.position));
     }
 
@@ -64,7 +62,8 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
     {
         cam = GetComponent<Camera>();
         deviceHandler = DeviceHandler.Get(this);
-        uiBehaviour = uiBehaviourObject.GetComponent<UIBehaviour>();
+        uiManager = UIManager.Get();
+        uiManager.AddGame(this);
         rayCastManager = new RayCastManager(cam);
         originalPosition = cam.transform.position;
         originalRotation = cam.transform.rotation;
@@ -77,7 +76,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
 
     void ZoomIn()
     {
-        if (mode == UIBehaviour.ActionType.ZOOM && !hasZoomedIn)
+        if (mode == UIManager.ActionType.ZOOM && !hasZoomedIn)
         {
             (Vector3 cameraTarget, bool isValid) = selectedAsset.GetCameraLandingPosition();
             if (isValid)
@@ -88,12 +87,12 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
                 float angle = (float)Math.Acos(cosine);
                 cam.transform.Rotate(angle, 0.0f, 0.0f);
                 hasZoomedIn = true;
-                uiBehaviour.OnZoomIn();
+                uiManager.OnZoomIn(ZoomOut);
             }
         }
     }
 
-    public void ZoomOut()
+    void ZoomOut()
     {
         cam.transform.position = originalPosition;
         cam.transform.rotation = originalRotation;

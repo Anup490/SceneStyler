@@ -27,9 +27,9 @@ public class RotateButtonBehaviour : WidgetBehaviour
         ShowHideSlider(false);
     }
 
-    public override UIBehaviour.ActionType GetActionType()
+    public override UIManager.ActionType GetActionType()
     {
-        return UIBehaviour.ActionType.ROTATE;
+        return UIManager.ActionType.ROTATE;
     }
 
     public void OnRotate()
@@ -37,7 +37,7 @@ public class RotateButtonBehaviour : WidgetBehaviour
         rotateButtonBackground.color = Color.black;
         rotateTextMesh.color = Color.white;
         uiManager.OnWidgetSelect(index);
-        uiManager.SetControlMode(UIBehaviour.ActionType.ROTATE);
+        uiManager.SetControlMode(UIManager.ActionType.ROTATE);
         ShowHideSlider(true);
     }
 
