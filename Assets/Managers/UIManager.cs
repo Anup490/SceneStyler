@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager
+public class UIManager : IDeviceCallback
 {
     public delegate void OnBack();
 
@@ -10,6 +10,7 @@ public class UIManager
     List<WidgetBehaviour> widgets;
     UIBehaviour uiBehaviour;
     GameBehaviour gameBehaviour;
+    DeviceHandler deviceHandler;
 
     public enum ActionType
     {
@@ -26,6 +27,8 @@ public class UIManager
     UIManager()
     {
         widgets = new List<WidgetBehaviour>();
+        deviceHandler = DeviceHandler.Get();
+        deviceHandler.AddCallback(this);
     }
 
     public void AddUI(UIBehaviour behaviour)
@@ -99,10 +102,19 @@ public class UIManager
         }
     }
 
-    public void OnUIClick(Vector3 worldPosition)
+    public void OnClick(Vector3 position)
     {
         if (uiBehaviour != null)
-            uiBehaviour.OnUIClick(worldPosition);
+            uiBehaviour.OnClick(position);
+    }
+
+    public void OnHold(Vector3 position) {}
+
+    public void OnRelease() {}
+
+    DeviceHandler.Type IDeviceCallback.GetType()
+    {
+        return DeviceHandler.Type.UI;
     }
 
     WidgetBehaviour GetWidget(ActionType actionType)

@@ -11,7 +11,6 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
     UIManager.ActionType mode = UIManager.ActionType.DRAG;
     Vector3 originalPosition;
     Quaternion originalRotation;
-    bool hasZoomedIn;
 
     public void SetControlMode(UIManager.ActionType gameMode)
     {
@@ -24,7 +23,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
             selectedAsset.Rotate(new Vector3(0, yaw, 0), yawDisplay);
     }
 
-    public void OnWorldClick(Vector3 position)
+    public void OnClick(Vector3 position)
     {
         selectedAsset = rayCastManager.DetectAsset(position, mode == UIManager.ActionType.DRAG);
         if (selectedAsset != null)
@@ -41,12 +40,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
         }
     }
 
-    public void OnUIClick(Vector3 position)
-    {
-        uiManager.OnUIClick(position);
-    }
-
-    public void OnDrag(Vector3 position)
+    public void OnHold(Vector3 position)
     {
         if (mode == UIManager.ActionType.DRAG && selectedAsset != null)
             selectedAsset.Displace(rayCastManager.GetTargetPosition(position, selectedAsset.transform.position));
@@ -58,10 +52,16 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
             selectedAsset.OnUnselect();            
     }
 
+    DeviceHandler.Type IDeviceCallback.GetType()
+    {
+        return DeviceHandler.Type.GAME;
+    }
+
     void Start()
     {
         cam = GetComponent<Camera>();
-        deviceHandler = DeviceHandler.Get(this);
+        deviceHandler = DeviceHandler.Get();
+        deviceHandler.AddCallback(this);
         uiManager = UIManager.Get();
         uiManager.AddGame(this);
         rayCastManager = new RayCastManager(cam);
@@ -76,7 +76,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
 
     void ZoomIn()
     {
-        if (mode == UIManager.ActionType.ZOOM && !hasZoomedIn)
+        if (mode == UIManager.ActionType.ZOOM)
         {
             (Vector3 cameraTarget, bool isValid) = selectedAsset.GetCameraLandingPosition();
             if (isValid)
@@ -86,7 +86,6 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
                 float cosine = Utils.GetCosine(camToAsset, cam.transform.forward);
                 float angle = (float)Math.Acos(cosine);
                 cam.transform.Rotate(angle, 0.0f, 0.0f);
-                hasZoomedIn = true;
                 uiManager.OnZoomIn(ZoomOut);
             }
         }
@@ -96,6 +95,5 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
     {
         cam.transform.position = originalPosition;
         cam.transform.rotation = originalRotation;
-        hasZoomedIn = false;
     }
 }

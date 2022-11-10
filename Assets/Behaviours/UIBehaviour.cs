@@ -13,7 +13,7 @@ public class UIBehaviour : MonoBehaviour
         sideBarManager.ShowHide(show, asset);
     }
 
-    public void OnUIClick(Vector3 worldPosition)
+    public void OnClick(Vector3 worldPosition)
     {
         sideBarManager.OnSideBarClick(worldPosition);
     }
