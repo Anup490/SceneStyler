@@ -241,10 +241,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentObject: {fileID: 963194225}
-  dragButtonObject: {fileID: 287478854}
-  rotateButtonObject: {fileID: 664553730}
-  zoomButtonObject: {fileID: 1643880481}
-  sliderObject: {fileID: 2042454430}
   sideBarObject: {fileID: 597012783}
   gridItemObject: {fileID: 1973482788}
 --- !u!1 &193367357
@@ -618,6 +614,7 @@ GameObject:
   - component: {fileID: 287478858}
   - component: {fileID: 287478857}
   - component: {fileID: 287478856}
+  - component: {fileID: 287478859}
   m_Layer: 5
   m_Name: DragButton
   m_TagString: Untagged
@@ -690,8 +687,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 14982643}
-        m_TargetAssemblyTypeName: UIBehaviour, Assembly-CSharp
+      - m_Target: {fileID: 287478859}
+        m_TargetAssemblyTypeName: DragButtonBehaviour, Assembly-CSharp
         m_MethodName: OnDrag
         m_Mode: 1
         m_Arguments:
@@ -740,6 +737,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 287478854}
   m_CullTransparentMesh: 1
+--- !u!114 &287478859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287478854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3568db9949b469478ee04959d043918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 14982638}
+  dragButtonObject: {fileID: 287478854}
 --- !u!1 &518948560
 GameObject:
   m_ObjectHideFlags: 0
@@ -970,6 +981,7 @@ GameObject:
   - component: {fileID: 664553734}
   - component: {fileID: 664553733}
   - component: {fileID: 664553732}
+  - component: {fileID: 664553735}
   m_Layer: 5
   m_Name: RotateButton
   m_TagString: Untagged
@@ -1043,8 +1055,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 14982643}
-        m_TargetAssemblyTypeName: UIBehaviour, Assembly-CSharp
+      - m_Target: {fileID: 664553735}
+        m_TargetAssemblyTypeName: RotateButtonBehaviour, Assembly-CSharp
         m_MethodName: OnRotate
         m_Mode: 1
         m_Arguments:
@@ -1093,6 +1105,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 664553730}
   m_CullTransparentMesh: 1
+--- !u!114 &664553735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664553730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 132309844fac9a54ca084bca1a3c58c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 14982638}
+  rotateButtonObject: {fileID: 664553730}
+  sliderObject: {fileID: 2042454430}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1652,6 +1679,7 @@ GameObject:
   - component: {fileID: 1643880485}
   - component: {fileID: 1643880484}
   - component: {fileID: 1643880483}
+  - component: {fileID: 1643880486}
   m_Layer: 5
   m_Name: ZoomButton
   m_TagString: Untagged
@@ -1724,8 +1752,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 14982643}
-        m_TargetAssemblyTypeName: UIBehaviour, Assembly-CSharp
+      - m_Target: {fileID: 1643880486}
+        m_TargetAssemblyTypeName: ZoomButtonBehaviour, Assembly-CSharp
         m_MethodName: OnZoom
         m_Mode: 1
         m_Arguments:
@@ -1774,6 +1802,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1643880481}
   m_CullTransparentMesh: 1
+--- !u!114 &1643880486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643880481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d37eb4258541d8841b335ddb92da103e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 14982638}
+  zoomButtonObject: {fileID: 1643880481}
 --- !u!1 &1666096153
 GameObject:
   m_ObjectHideFlags: 0
@@ -2406,8 +2448,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 14982643}
-        m_TargetAssemblyTypeName: UIBehaviour, Assembly-CSharp
+      - m_Target: {fileID: 664553735}
+        m_TargetAssemblyTypeName: RotateButtonBehaviour, Assembly-CSharp
         m_MethodName: OnSliderChanged
         m_Mode: 1
         m_Arguments:

@@ -10,17 +10,12 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
     DeviceHandler deviceHandler;
     UIBehaviour uiBehaviour;
     RayCastManager rayCastManager;
-    ControlMode mode = ControlMode.DRAG;
+    UIBehaviour.ActionType mode = UIBehaviour.ActionType.DRAG;
     Vector3 originalPosition;
     Quaternion originalRotation;
     bool hasZoomedIn;
 
-    public enum ControlMode
-    {
-        DRAG, ROTATE, ZOOM
-    }
-
-    public void SetControlMode(ControlMode gameMode)
+    public void SetControlMode(UIBehaviour.ActionType gameMode)
     {
         mode = gameMode;
     }
@@ -33,7 +28,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
 
     public void OnWorldClick(Vector3 position)
     {
-        selectedAsset = rayCastManager.DetectAsset(position, mode == ControlMode.DRAG);
+        selectedAsset = rayCastManager.DetectAsset(position, mode == UIBehaviour.ActionType.DRAG);
         if (selectedAsset != null)
         {
             uiBehaviour.SetSliderValue(selectedAsset.yaw);
@@ -41,7 +36,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
             deviceHandler.UpdateSideBarVisibility(true);
             ZoomIn();
         }
-        else if (mode == ControlMode.DRAG)
+        else if (mode == UIBehaviour.ActionType.DRAG)
         {
             uiBehaviour.ShowHideSideBar(false, selectedAsset);
             deviceHandler.UpdateSideBarVisibility(false);
@@ -55,7 +50,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
 
     public void OnDrag(Vector3 position)
     {
-        if (mode == ControlMode.DRAG && selectedAsset != null)
+        if (mode == UIBehaviour.ActionType.DRAG && selectedAsset != null)
             selectedAsset.Displace(rayCastManager.GetTargetPosition(position, selectedAsset.transform.position));
     }
 
@@ -82,7 +77,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
 
     void ZoomIn()
     {
-        if (mode == ControlMode.ZOOM && !hasZoomedIn)
+        if (mode == UIBehaviour.ActionType.ZOOM && !hasZoomedIn)
         {
             (Vector3 cameraTarget, bool isValid) = selectedAsset.GetCameraLandingPosition();
             if (isValid)

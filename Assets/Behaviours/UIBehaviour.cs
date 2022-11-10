@@ -1,108 +1,47 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIBehaviour : MonoBehaviour
 {
     public GameObject parentObject;
-
-    public GameObject dragButtonObject;
-    public GameObject rotateButtonObject;
-    public GameObject zoomButtonObject;
-    public GameObject sliderObject;
-
     public GameObject sideBarObject;
     public GameObject gridItemObject;
 
     GameBehaviour gameBehaviour;
-    
-    Image dragButtonBackground;
-    TextMeshProUGUI dragTextMesh;
-
-    Image rotateButtonBackground;
-    TextMeshProUGUI rotateTextMesh;
-
-    Image zoomButtonBackground;
-    TextMeshProUGUI zoomTextMesh;
-    bool isZoomedIn;
-
-    Slider slider;
-    float prevSliderValue;
-    
     SideBarManager sideBarManager;
+    UIManager uiManager;
 
-    public void OnDrag()
+    public enum ActionType
     {
-        dragButtonBackground.color = Color.black;
-        dragTextMesh.color = Color.white;
-        gameBehaviour.SetControlMode(GameBehaviour.ControlMode.DRAG);
-
-        rotateButtonBackground.color = Color.white;
-        rotateTextMesh.color = Color.black;
-        ShowHideSlider(false);
-
-        zoomButtonBackground.color = Color.white;
-        zoomTextMesh.color = Color.black;
+        DRAG, ROTATE, ZOOM
     }
 
-    public void OnRotate()
+    public void OnZoomIn()
     {
-        rotateButtonBackground.color = Color.black;
-        rotateTextMesh.color = Color.white;
-        gameBehaviour.SetControlMode(GameBehaviour.ControlMode.ROTATE);
-        ShowHideSlider(true);
-
-        dragButtonBackground.color = Color.white;
-        dragTextMesh.color = Color.black;
-
-        zoomButtonBackground.color = Color.white;
-        zoomTextMesh.color = Color.black;
-    }
-
-    public void OnZoom()
-    {
-        if (!isZoomedIn)
-        {
-            zoomButtonBackground.color = Color.black;
-            zoomTextMesh.color = Color.white;
-            gameBehaviour.SetControlMode(GameBehaviour.ControlMode.ZOOM);
-
-            dragButtonBackground.color = Color.white;
-            dragTextMesh.color = Color.black;
-
-            rotateButtonBackground.color = Color.white;
-            rotateTextMesh.color = Color.black;
-            ShowHideSlider(false);
-        }
-        else
-        {
-            zoomTextMesh.text = "ZOOM";
-            rotateButtonObject.SetActive(true);
-            dragButtonObject.SetActive(true);
-            isZoomedIn = false;
-            gameBehaviour.ZoomOut();
-        }
-    }
-
-    public void OnSliderChanged()
-    {
-        float valDiff = slider.value - prevSliderValue;
-        gameBehaviour.RotateAsset(valDiff * 360.0f, slider.value);
-        prevSliderValue = slider.value;
+        ZoomButtonBehaviour zoomButton = uiManager.GetWidget(ActionType.ZOOM) as ZoomButtonBehaviour;
+        if (zoomButton)
+            zoomButton.OnZoomIn();
     }
 
     public void SetSliderValue(float val)
     {
-        prevSliderValue = val;
-        if (gameObject.activeSelf)
-            slider.SetValueWithoutNotify(prevSliderValue);
+        RotateButtonBehaviour rotateButton = uiManager.GetWidget(ActionType.ROTATE) as RotateButtonBehaviour;
+        if (rotateButton)
+            rotateButton.SetSliderValue(val);
     }
 
-    public void ShowHideSlider(bool show)
+    public void SetControlMode(ActionType mode)
     {
-        sliderObject.SetActive(show);
-        if (show && slider != null)
-            slider.SetValueWithoutNotify(prevSliderValue);
+        gameBehaviour.SetControlMode(mode);
+    }
+
+    public void NotifyRotation(float rotValue, float rotDisplayValue)
+    {
+        gameBehaviour.RotateAsset(rotValue, rotDisplayValue);
+    }
+
+    public void NotifyZoomOut()
+    {
+        gameBehaviour.ZoomOut();
     }
 
     public void ShowHideSideBar(bool show, AssetBehaviour asset)
@@ -118,31 +57,11 @@ public class UIBehaviour : MonoBehaviour
         sideBarManager.OnSideBarClick(worldPosition);
     }
 
-    public void OnZoomIn()
-    {
-        zoomTextMesh.text = "BACK";
-        dragButtonObject.SetActive(false);
-        rotateButtonObject.SetActive(false);
-        isZoomedIn = true;
-    }
-
-
     void Start()
     {
         gameBehaviour = parentObject.GetComponent<GameBehaviour>();
-        
-        dragButtonBackground = dragButtonObject.GetComponent<Image>();
-        dragTextMesh = dragButtonObject.GetComponentInChildren<TextMeshProUGUI>();
-        
-        rotateButtonBackground = rotateButtonObject.GetComponent<Image>();
-        rotateTextMesh = rotateButtonObject.GetComponentInChildren<TextMeshProUGUI>();
-
-        zoomButtonBackground = zoomButtonObject.GetComponent<Image>();
-        zoomTextMesh = zoomButtonObject.GetComponentInChildren<TextMeshProUGUI>();
-
-        slider = sliderObject.GetComponent<Slider>();
-        ShowHideSlider(false);
         sideBarManager = new SideBarManager(sideBarObject, gridItemObject);
+        uiManager = UIManager.Get(this);
     }
 
     void Update()
