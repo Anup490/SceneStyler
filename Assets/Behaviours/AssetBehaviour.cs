@@ -6,6 +6,7 @@ abstract public class AssetBehaviour : MonoBehaviour
     public List<Texture> textures = new List<Texture>();
     public List<GameObject> children = new List<GameObject>();
     public string materialName;
+    public GameObject cameraLanding;
 
     protected Vector3 deltaPosition;
 
@@ -30,6 +31,13 @@ abstract public class AssetBehaviour : MonoBehaviour
             }
         }
     }
+
+    public (Vector3, bool) GetCameraLandingPosition()
+    {
+        if (cameraLanding != null)
+            return (cameraLanding.transform.position, true);
+        return (Vector3.zero, false);
+    }    
 
     abstract public void Displace(Vector3 targetPosition);
 

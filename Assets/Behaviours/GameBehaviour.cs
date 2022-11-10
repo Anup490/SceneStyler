@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameBehaviour : MonoBehaviour, IDeviceCallback
@@ -10,10 +11,13 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
     UIBehaviour uiBehaviour;
     RayCastManager rayCastManager;
     ControlMode mode = ControlMode.DRAG;
+    Vector3 originalPosition;
+    Quaternion originalRotation;
+    bool hasZoomedIn;
 
     public enum ControlMode
     {
-        DRAG, ROTATE
+        DRAG, ROTATE, ZOOM
     }
 
     public void SetControlMode(ControlMode gameMode)
@@ -35,6 +39,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
             uiBehaviour.SetSliderValue(selectedAsset.yaw);
             uiBehaviour.ShowHideSideBar(true, selectedAsset);
             deviceHandler.UpdateSideBarVisibility(true);
+            ZoomIn();
         }
         else if (mode == ControlMode.DRAG)
         {
@@ -51,7 +56,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
     public void OnDrag(Vector3 position)
     {
         if (mode == ControlMode.DRAG && selectedAsset != null)
-            selectedAsset.Displace(rayCastManager.GetTargetPosition(position, selectedAsset.transform.position));      
+            selectedAsset.Displace(rayCastManager.GetTargetPosition(position, selectedAsset.transform.position));
     }
 
     public void OnRelease()
@@ -63,7 +68,11 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
     void Start()
     {
         cam = GetComponent<Camera>();
-        Init();
+        deviceHandler = DeviceHandler.Get(this);
+        uiBehaviour = uiBehaviourObject.GetComponent<UIBehaviour>();
+        rayCastManager = new RayCastManager(cam);
+        originalPosition = cam.transform.position;
+        originalRotation = cam.transform.rotation;
     }
 
     void Update()
@@ -71,10 +80,28 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
         deviceHandler.OnUpdate();
     }
 
-    void Init()
-    {      
-        deviceHandler = DeviceHandler.Get(this);
-        uiBehaviour = uiBehaviourObject.GetComponent<UIBehaviour>();
-        rayCastManager = new RayCastManager(cam);
+    void ZoomIn()
+    {
+        if (mode == ControlMode.ZOOM && !hasZoomedIn)
+        {
+            (Vector3 cameraTarget, bool isValid) = selectedAsset.GetCameraLandingPosition();
+            if (isValid)
+            {
+                cam.transform.position = cameraTarget;
+                Vector3 camToAsset = selectedAsset.transform.position - cameraTarget;
+                float cosine = Utils.GetCosine(camToAsset, cam.transform.forward);
+                float angle = (float)Math.Acos(cosine);
+                cam.transform.Rotate(angle, 0.0f, 0.0f);
+                hasZoomedIn = true;
+                uiBehaviour.OnZoomIn();
+            }
+        }
+    }
+
+    public void ZoomOut()
+    {
+        cam.transform.position = originalPosition;
+        cam.transform.rotation = originalRotation;
+        hasZoomedIn = false;
     }
 }

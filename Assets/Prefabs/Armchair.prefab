@@ -29,9 +29,41 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6528519557198022566}
+  - {fileID: 2420897070021189919}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8081098622527367911
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2420897070021189919}
+  m_Layer: 0
+  m_Name: CameraLanding
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2420897070021189919
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8081098622527367911}
+  m_LocalRotation: {x: -0, y: -0.6888761, z: -0, w: -0.72487915}
+  m_LocalPosition: {x: -0.609, y: 0.795, z: 0.54}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2340860322989644747}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 447.082, z: 0}
 --- !u!1001 &6706788450995527757
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -177,6 +209,8 @@ MonoBehaviour:
   - {fileID: 964676088992485669}
   - {fileID: 3176726303088438448}
   - {fileID: 3426894129094534902}
+  materialName: 
+  cameraLanding: {fileID: 8081098622527367911}
 --- !u!4 &6528519557198022566 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: def6e34bbee13784d9603687055b3aad, type: 3}

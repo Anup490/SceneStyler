@@ -34,7 +34,7 @@ public class DeviceHandler
 
     public void OnClick(Vector3 position)
     {
-        if (Utils.IsNotTouchingUI(position) && IsNotTouchingSideBar(position))
+        if (IsNotTouchingSideBar(position))
             deviceCallback.OnWorldClick(position);
         else if (!hasClickedUI)
         {
