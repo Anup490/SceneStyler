@@ -55,8 +55,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6776347266215693354}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.072, y: 0.579, z: 1.188}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.245, y: 0.579, z: 1.737}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -222,6 +222,7 @@ MonoBehaviour:
   - {fileID: 888223709485175296}
   materialName: 
   cameraLanding: {fileID: 6776347266215693354}
+  lookAtOffset: {x: 0.5, y: 0.75, z: 0}
 --- !u!4 &677307137350338855 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f035d8fcc0d726344923c7335cf6d9e1, type: 3}

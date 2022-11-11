@@ -55,13 +55,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7826797673877397188}
-  m_LocalRotation: {x: -0, y: -0.88849425, z: -0, w: 0.45888767}
+  m_LocalRotation: {x: -0, y: -0.8884943, z: -0, w: 0.4588877}
   m_LocalPosition: {x: 0.0038411326, y: 796.00146, z: 1237.0021}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7062280767353079957}
-  m_RootOrder: 1
+  m_Father: {fileID: 8560205918522396767}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 594.631, z: 0}
 --- !u!1001 &7316374180970770302
 PrefabInstance:
@@ -177,8 +177,14 @@ MonoBehaviour:
   - {fileID: 482791890339943044}
   materialName: 
   cameraLanding: {fileID: 7826797673877397188}
+  lookAtOffset: {x: 0, y: 0, z: 0}
 --- !u!4 &7062280767353079957 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 25701a8bf595e734ca23ef64696ddfa6, type: 3}
+  m_PrefabInstance: {fileID: 7316374180970770302}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8560205918522396767 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -7835403120860233951, guid: 25701a8bf595e734ca23ef64696ddfa6, type: 3}
   m_PrefabInstance: {fileID: 7316374180970770302}
   m_PrefabAsset: {fileID: 0}

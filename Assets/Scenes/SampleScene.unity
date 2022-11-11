@@ -240,7 +240,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a120a6f5095561d4aa0f093717af115a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentObject: {fileID: 963194225}
   sideBarObject: {fileID: 597012783}
   gridItemObject: {fileID: 1973482788}
 --- !u!1 &193367357
@@ -597,6 +596,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8766898503055173163, guid: feba89ab2906b5949a8856e70bcfc6ee, type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 735268333}
+    - target: {fileID: 8766898503055173163, guid: feba89ab2906b5949a8856e70bcfc6ee, type: 3}
       propertyPath: cameraLanding
       value: 
       objectReference: {fileID: 868386574}
@@ -749,7 +752,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3568db9949b469478ee04959d043918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 14982638}
   dragButtonObject: {fileID: 287478854}
 --- !u!1 &518948560
 GameObject:
@@ -1117,7 +1119,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 132309844fac9a54ca084bca1a3c58c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 14982638}
   rotateButtonObject: {fileID: 664553730}
   sliderObject: {fileID: 2042454430}
 --- !u!1 &705507993
@@ -1214,6 +1215,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &735268333 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2212024233819881579, guid: feba89ab2906b5949a8856e70bcfc6ee, type: 3}
+  m_PrefabInstance: {fileID: 239500026}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &868386574 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8646199868471539676, guid: feba89ab2906b5949a8856e70bcfc6ee, type: 3}
@@ -1393,7 +1399,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 934290fb87fd36d4abcdf24bf841116f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiBehaviourObject: {fileID: 14982638}
 --- !u!1 &1027222566
 GameObject:
   m_ObjectHideFlags: 0
@@ -1814,7 +1819,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d37eb4258541d8841b335ddb92da103e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 14982638}
   zoomButtonObject: {fileID: 1643880481}
 --- !u!1 &1666096153
 GameObject:
@@ -2244,7 +2248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8929225701957796527, guid: 86faecefac788ed46835a1991587fd8a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.632
+      value: -0.49
       objectReference: {fileID: 0}
     - target: {fileID: 8929225701957796527, guid: 86faecefac788ed46835a1991587fd8a, type: 3}
       propertyPath: m_LocalPosition.y

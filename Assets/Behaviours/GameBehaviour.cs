@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class GameBehaviour : MonoBehaviour, IDeviceCallback
@@ -11,6 +10,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
     UIManager.ActionType mode = UIManager.ActionType.DRAG;
     Vector3 originalPosition;
     Quaternion originalRotation;
+    AssetBehaviour previousAsset;
 
     public void SetControlMode(UIManager.ActionType gameMode)
     {
@@ -44,6 +44,8 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
     {
         if (mode == UIManager.ActionType.DRAG && selectedAsset != null)
             selectedAsset.Displace(rayCastManager.GetTargetPosition(position, selectedAsset.transform.position));
+        else if (mode == UIManager.ActionType.ZOOM)
+            RotateCamera();
     }
 
     public void OnRelease()
@@ -76,17 +78,16 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
 
     void ZoomIn()
     {
-        if (mode == UIManager.ActionType.ZOOM)
+        if (mode == UIManager.ActionType.ZOOM && (!previousAsset || selectedAsset != previousAsset))
         {
             (Vector3 cameraTarget, bool isValid) = selectedAsset.GetCameraLandingPosition();
             if (isValid)
             {
                 cam.transform.position = cameraTarget;
-                Vector3 camToAsset = selectedAsset.transform.position - cameraTarget;
-                float cosine = Utils.GetCosine(camToAsset, cam.transform.forward);
-                float angle = (float)Math.Acos(cosine);
-                cam.transform.Rotate(angle, 0.0f, 0.0f);
+                Vector3 lookAtPosition = selectedAsset.GetLookAtPosition();
+                cam.transform.forward = (lookAtPosition - cameraTarget).normalized;
                 uiManager.OnZoomIn(ZoomOut);
+                previousAsset = selectedAsset;
             }
         }
     }
@@ -95,5 +96,19 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
     {
         cam.transform.position = originalPosition;
         cam.transform.rotation = originalRotation;
+        previousAsset = null;
     }
+
+    void RotateCamera()
+    {
+        if (previousAsset)
+        {
+            float sensitivity = 20.0f;
+            float yaw = Input.GetAxis("Mouse X") * -sensitivity;
+            float pitch = Input.GetAxis("Mouse Y") * sensitivity;
+            Vector3 newRotation = transform.eulerAngles - new Vector3(pitch, yaw, 0.0f);
+            if (newRotation.x <= 89.0f || newRotation.x >= 271.0f)
+                transform.eulerAngles = newRotation;
+        }
+    }    
 }

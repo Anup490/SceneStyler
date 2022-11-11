@@ -5,8 +5,9 @@ abstract public class AssetBehaviour : MonoBehaviour
 {
     public List<Texture> textures = new List<Texture>();
     public List<GameObject> children = new List<GameObject>();
-    public string materialName;
     public GameObject cameraLanding;
+    public Vector3 lookAtOffset;
+    public string materialName;
 
     protected Vector3 deltaPosition;
 
@@ -43,7 +44,9 @@ abstract public class AssetBehaviour : MonoBehaviour
 
     abstract public void Rotate(Vector3 targetRotation, float yawDisplay);
 
-    abstract public void OnUnselect();
-
     abstract public string GetDescription();
+
+    abstract public Vector3 GetLookAtPosition();
+
+    abstract public void OnUnselect();
 }

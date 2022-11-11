@@ -22,14 +22,19 @@ public class WallMovementBehaviour : AssetBehaviour
         yaw = yawDisplay;
     }
 
-    public override void OnUnselect()
-    {
-        deltaPosition = Vector3.zero;
-    }
-
     public override string GetDescription()
     {
         return gameObject.name;
+    }
+
+    public override Vector3 GetLookAtPosition()
+    {
+        return transform.position + lookAtOffset;
+    }
+
+    public override void OnUnselect()
+    {
+        deltaPosition = Vector3.zero;
     }
 
     bool IsWithinBounds(Vector3 newPos)
