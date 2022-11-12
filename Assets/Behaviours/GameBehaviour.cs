@@ -1,16 +1,18 @@
+using System.Collections;
 using UnityEngine;
 
 public class GameBehaviour : MonoBehaviour, IDeviceCallback
 {
     Camera cam;
     AssetBehaviour selectedAsset;
+    AssetBehaviour previousAsset;
     DeviceHandler deviceHandler;
     UIManager uiManager;
     RayCastManager rayCastManager;
     UIManager.ActionType mode = UIManager.ActionType.DRAG;
     Vector3 originalPosition;
     Quaternion originalRotation;
-    AssetBehaviour previousAsset;
+    Vector3 originalForward;
 
     public void SetControlMode(UIManager.ActionType gameMode)
     {
@@ -69,6 +71,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
         rayCastManager = new RayCastManager(cam);
         originalPosition = cam.transform.position;
         originalRotation = cam.transform.rotation;
+        originalForward = cam.transform.forward;
     }
 
     void Update()
@@ -82,21 +85,8 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
         {
             (Vector3 cameraTarget, bool isValid) = selectedAsset.GetCameraLandingPosition();
             if (isValid)
-            {
-                cam.transform.position = cameraTarget;
-                Vector3 lookAtPosition = selectedAsset.GetLookAtPosition();
-                cam.transform.forward = (lookAtPosition - cameraTarget).normalized;
-                uiManager.OnZoomIn(ZoomOut);
-                previousAsset = selectedAsset;
-            }
+                StartCoroutine(MoveToTarget(cameraTarget));
         }
-    }
-
-    void ZoomOut()
-    {
-        cam.transform.position = originalPosition;
-        cam.transform.rotation = originalRotation;
-        previousAsset = null;
     }
 
     void RotateCamera()
@@ -110,5 +100,51 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
             if (newRotation.x <= 89.0f || newRotation.x >= 271.0f)
                 transform.eulerAngles = newRotation;
         }
-    }    
+    }
+
+    IEnumerator MoveToTarget(Vector3 cameraTarget)
+    {
+        Vector3 cameraToTarget = cameraTarget - cam.transform.position;
+        Vector3 cameraToTargetNormal = cameraToTarget.normalized;
+        Vector3 lookAtPosition = selectedAsset.GetLookAtPosition();
+        for (float i = 0.0f; i <= cameraToTarget.magnitude; i += 0.05f)
+        {
+            cam.transform.position += cameraToTargetNormal * 0.05f;
+            cam.transform.forward = (lookAtPosition - cam.transform.position).normalized;
+            yield return new WaitForSeconds(0.01f);
+        }
+        cam.transform.position = cameraTarget;
+        cam.transform.forward = (lookAtPosition - cameraTarget).normalized;
+        uiManager.OnZoomIn(ZoomOut);
+        previousAsset = selectedAsset;
+    }
+
+    void ZoomOut()
+    {
+        StartCoroutine(MoveToOriginalPosition());
+    }
+
+    IEnumerator MoveToOriginalPosition()
+    {
+        Vector3 cameraToTarget = originalPosition - cam.transform.position;
+        Vector3 cameraToTargetNormal = cameraToTarget.normalized;
+        float totalAngle = Quaternion.Angle(originalRotation, cam.transform.rotation);
+        float iterations = cameraToTarget.magnitude / 0.05f;
+        float angleIteration = totalAngle / iterations;
+        float angle = 360.0f - totalAngle;
+        Vector3 axis = Vector3.Cross(cam.transform.forward, originalForward);
+        for (float i = 0.0f; i <= cameraToTarget.magnitude; i += 0.05f)
+        {
+            cam.transform.position += cameraToTargetNormal * 0.05f;
+            if (angle > 0.0f)
+            {
+                cam.transform.rotation = Quaternion.AngleAxis(angle, axis);
+                angle += angleIteration;
+            }
+            yield return new WaitForSeconds(0.01f);
+        }
+        cam.transform.position = originalPosition;
+        cam.transform.rotation = originalRotation;
+        previousAsset = null;
+    }
 }
