@@ -102,6 +102,12 @@ public class UIManager : IDeviceCallback
         }
     }
 
+    public void ShowHideWidgets(bool show, AssetBehaviour asset)
+    {
+        foreach (WidgetBehaviour widget in widgets)
+            widget.gameObject.SetActive(show);
+    }
+
     public void OnClick(Vector3 position)
     {
         if (uiBehaviour != null)
