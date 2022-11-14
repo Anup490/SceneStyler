@@ -14,7 +14,7 @@ public class UIManager : IDeviceCallback
 
     public enum ActionType
     {
-        DRAG, ROTATE, ZOOM
+        DRAG, ROTATE, ZOOM, ORBIT
     }
 
     public static UIManager Get()

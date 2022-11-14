@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class GameBehaviour : MonoBehaviour, IDeviceCallback
 {
+    const int framesforoffest = 5;
+
+    int frameCounter = 0;
     Camera cam;
     AssetBehaviour selectedAsset;
     AssetBehaviour previousAsset;
@@ -28,7 +31,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
 
     public void OnClick(Vector3 position)
     {
-        if (allowInput)
+        if (allowInput && mode != UIManager.ActionType.ORBIT)
         {
             selectedAsset = rayCastManager.DetectAsset(position, mode == UIManager.ActionType.DRAG);
             if (selectedAsset != null)
@@ -48,7 +51,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
 
     public void OnHold(Vector3 position)
     {
-        if (allowInput)
+        if (allowInput && mode != UIManager.ActionType.ORBIT)
         {
             if (mode == UIManager.ActionType.DRAG && selectedAsset != null)
                 selectedAsset.Displace(rayCastManager.GetTargetPosition(position, selectedAsset.transform.position));
@@ -84,6 +87,16 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
     void Update()
     {
         deviceHandler.OnUpdate();
+        if (mode == UIManager.ActionType.ORBIT)
+        {
+            if (frameCounter > framesforoffest)
+            {
+                OrbitCamera();
+                frameCounter = 0;
+            }
+            else
+                frameCounter++;
+        }
     }
 
     void ZoomIn()
@@ -163,5 +176,15 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
         previousAsset = null;
         uiManager.ShowHideWidgets(true, selectedAsset);
         allowInput = true;
+    }
+
+    void OrbitCamera()
+    {
+        Vector3 lookAtPosition = selectedAsset.GetLookAtPosition();
+        Vector3 lookAtDirection = cam.transform.position - lookAtPosition;
+        Vector3 rotatedlookAtDirection = Quaternion.AngleAxis(1, Vector3.up) * lookAtDirection;
+        Vector3 offset = rotatedlookAtDirection - lookAtDirection;
+        cam.transform.position += offset;
+        cam.transform.forward = (lookAtPosition - cam.transform.position).normalized;
     }
 }
