@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class GameBehaviour : MonoBehaviour, IDeviceCallback
 {
-    const int framesforoffest = 5;
-
-    int frameCounter = 0;
     Camera cam;
     AssetBehaviour selectedAsset;
     AssetBehaviour previousAsset;
@@ -17,6 +14,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
     Quaternion originalRotation;
     Vector3 originalForward;
     bool allowInput = true;
+    Vector3 originalCursorPosition = Vector3.zero;
 
     public void SetControlMode(UIManager.ActionType gameMode)
     {
@@ -58,12 +56,15 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
             else if (mode == UIManager.ActionType.ZOOM)
                 RotateCamera();
         }
+        else if (mode == UIManager.ActionType.ORBIT)
+            OrbitCamera(position);
     }
 
     public void OnRelease()
     {
         if (selectedAsset != null)
-            selectedAsset.OnUnselect();            
+            selectedAsset.OnUnselect();
+        originalCursorPosition = Vector3.zero;
     }
 
     DeviceHandler.Type IDeviceCallback.GetType()
@@ -87,16 +88,6 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
     void Update()
     {
         deviceHandler.OnUpdate();
-        if (mode == UIManager.ActionType.ORBIT)
-        {
-            if (frameCounter > framesforoffest)
-            {
-                OrbitCamera();
-                frameCounter = 0;
-            }
-            else
-                frameCounter++;
-        }
     }
 
     void ZoomIn()
@@ -178,13 +169,16 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
         allowInput = true;
     }
 
-    void OrbitCamera()
+    void OrbitCamera(Vector3 position)
     {
+        float diff = position.x - originalCursorPosition.x;
         Vector3 lookAtPosition = selectedAsset.GetLookAtPosition();
         Vector3 lookAtDirection = cam.transform.position - lookAtPosition;
-        Vector3 rotatedlookAtDirection = Quaternion.AngleAxis(1, Vector3.up) * lookAtDirection;
+        Vector3 rotatedlookAtDirection;
+        rotatedlookAtDirection = Quaternion.AngleAxis(Utils.IsZero(originalCursorPosition) ? 0 : diff, Vector3.up) * lookAtDirection;
         Vector3 offset = rotatedlookAtDirection - lookAtDirection;
         cam.transform.position += offset;
         cam.transform.forward = (lookAtPosition - cam.transform.position).normalized;
+        originalCursorPosition = position;
     }
 }
