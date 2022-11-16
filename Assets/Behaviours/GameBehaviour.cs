@@ -15,10 +15,13 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
     Vector3 originalForward;
     bool allowInput = true;
     Vector3 originalCursorPosition = Vector3.zero;
+    Vector3 newForward;
 
     public void SetControlMode(UIManager.ActionType gameMode)
     {
         mode = gameMode;
+        if (gameMode == UIManager.ActionType.ORBIT)
+            cam.transform.forward = newForward;
     }
 
     public void RotateAsset(float yaw, float yawDisplay)
@@ -130,6 +133,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
         }
         cam.transform.position = cameraTarget;
         cam.transform.forward = (lookAtPosition - cameraTarget).normalized;
+        newForward = cam.transform.forward;
         previousAsset = selectedAsset;
         allowInput = true;
         uiManager.ShowHideWidgets(true, selectedAsset);
@@ -164,6 +168,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
         }
         cam.transform.position = originalPosition;
         cam.transform.rotation = originalRotation;
+        newForward = Vector3.zero;
         previousAsset = null;
         uiManager.ShowHideWidgets(true, selectedAsset);
         allowInput = true;
@@ -174,8 +179,7 @@ public class GameBehaviour : MonoBehaviour, IDeviceCallback
         float diff = position.x - originalCursorPosition.x;
         Vector3 lookAtPosition = selectedAsset.GetLookAtPosition();
         Vector3 lookAtDirection = cam.transform.position - lookAtPosition;
-        Vector3 rotatedlookAtDirection;
-        rotatedlookAtDirection = Quaternion.AngleAxis(Utils.IsZero(originalCursorPosition) ? 0 : diff, Vector3.up) * lookAtDirection;
+        Vector3 rotatedlookAtDirection = Quaternion.AngleAxis(Utils.IsZero(originalCursorPosition) ? 0 : diff, Vector3.up) * lookAtDirection;
         Vector3 offset = rotatedlookAtDirection - lookAtDirection;
         cam.transform.position += offset;
         cam.transform.forward = (lookAtPosition - cam.transform.position).normalized;
