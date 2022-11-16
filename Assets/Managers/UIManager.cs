@@ -114,7 +114,7 @@ public class UIManager : IDeviceCallback
             uiBehaviour.OnClick(position);
     }
 
-    public void OnHold(Vector3 position) {}
+    public void OnHold(Vector3 position, Vector2 axes) {}
 
     public void OnRelease() {}
 

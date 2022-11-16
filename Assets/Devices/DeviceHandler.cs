@@ -54,10 +54,10 @@ public class DeviceHandler
         }
     }
 
-    public void OnDrag(Vector3 position)
+    public void OnDrag(Vector3 position, Vector2 axes)
     {
         if (IsNotTouchingSideBar(position))
-            GetCallback(Type.GAME).OnHold(position);
+            GetCallback(Type.GAME).OnHold(position, axes);
     }
 
     public void OnRelease()

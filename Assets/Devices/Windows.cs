@@ -14,7 +14,7 @@ public class Windows : Device
             if (hasPressedLMB)
             {
                 if (Utils.IsZero(lastMousePos)) lastMousePos = Input.mousePosition;
-                handler.OnDrag(Input.mousePosition);
+                handler.OnDrag(Input.mousePosition, new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));
                 lastMousePos = Input.mousePosition;
             }
             else

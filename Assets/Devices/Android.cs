@@ -20,7 +20,7 @@ public class Android : Device
             handler.OnClick(touch.position);
         }
         else if ((touch.phase == TouchPhase.Moved) && (prevDragFingerId == touch.fingerId))
-            handler.OnDrag(touch.position);
+            handler.OnDrag(touch.position, new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));
         else if (touch.phase == TouchPhase.Ended)
         {
             prevDragFingerId = -1;
