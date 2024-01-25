@@ -2,6 +2,9 @@
 A simple demo of scene styler made in Unity. The application allows the user to modify the textures of the 3D models, zoom into each of them and examine those models 
 from a 360 degree perspective.
 
+###### Demo:
+https://youtu.be/8XX9VqEeOHg
+
 ###### Language: C#
 
 ###### Tools: Visual studio, Unity
